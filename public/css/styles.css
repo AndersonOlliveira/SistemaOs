@@ -12,3 +12,34 @@
      width: 100px;
      display: block;
  }
+
+ .card-abrir-chamado {
+    padding: 30px 0 0 0;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .sidebar{
+        background:#81c6f5 !important;
+}
+
+    .btn{
+
+        color: white;
+
+        padding-right: 10px;
+       }
+
+     .button{
+      position: center;
+
+    }
+
+    a{
+
+        color: black;
+    }
+    .chart-container {
+        max-width: 100%; /* Define a largura máxima do contêiner como 100% */
+        overflow-x: auto; /* Adicione a barra de rolagem horizontal se o conteúdo ultrapassar a largura */
+        overflow-y: auto; /* Adicione a barra de rolagem horizontal se o conteúdo ultrapassar a largura */
+      }
