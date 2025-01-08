@@ -5,6 +5,10 @@
   }
 
   .botao{
-    background-color: #32cd32;
+    background-color: #47a8e9;
 
   }
+  .card-header img{
+     width: 100px;
+     display: block;
+ }
