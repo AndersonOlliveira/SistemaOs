@@ -110,6 +110,9 @@ class RegisterController extends Controller
                        'password' => $senha,
                        'nivel' => $dados->selecionar,
                        'tipoUser' => $cadastroUsers,
+                       'created_at' => now(),
+                       'updated_at' => now(),
+
                     ];
                     $userId = DB::table('users')->insertGetId($userData);// Dados para a inserção no acesso
               $accessData = [

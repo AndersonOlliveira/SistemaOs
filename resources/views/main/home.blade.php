@@ -2,8 +2,6 @@
 
 @section('title', 'Home')
 
+@section('content')
 
-@if(session('msg'))
-               <div class="alert alert-warning" role="alert">
-                   {{session('msg')}}
-                    @endif
+@endsection

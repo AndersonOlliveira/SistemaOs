@@ -11,15 +11,13 @@
     <link rel="stylesheet" href="js/datatables/datatables.net-dt/css/jquery.dataTables.css">
     <script src="js/bootstrap/js/orginalCol.js"></script>
     <script src="js/Scripts.js"></script>
-
     <title>Visium Os</title>
 </head>
-
 <body>
     <header>
         <nav class="navbar navbar-dark bg-dark">
             <div class="d-flex">
-                <a class="navbar-brand" href="">
+                <a class="navbar-brand" href="{{route('main.home')}}">
                     <img id='imagem' src="icons/ordem.png" class="d-inline-block align-top" alt="">
                     Visium OS
                 </a>
@@ -34,8 +32,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link active" href="#"><img src="icons/icons8-usuário-de-gênero-neutro-20.png">{{auth()->user()->login}}
-                        <a class="nav-link active" href="="><img src="icons/icons8-usuário-de-gênero-neutro-20.png">{{auth()->user()->nivel}}
-                        </a>
+                             </a>
                     </li>
                 </ul>
                 @endif
@@ -47,8 +44,7 @@
             </div>
         </nav>
     </header>
-
-    <div class="container-fluid">
+ <div class="container-fluid">
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky">
@@ -68,7 +64,7 @@
                             <hr>
                             <li><img src="icons/administrador.png" width="15" height="15"><a href="addUsuario/listaUsuarios.php" style="cursor: pointer;">Listar Usuários</a></li>
                             <hr>
-                            <li><img src="icons/administrador.png" width="15" height="15"><a href="addUsuario/meuPerfil.php" style="cursor: pointer;">Meu Perfil</a></li>
+                            <li><img src="icons/administrador.png" width="15" height="15"><a href="{{route('teste')}}" style="cursor: pointer;">teste</a></li>
                         </ul>
                     </div> <!-- para terceiro botão -->
             </nav>

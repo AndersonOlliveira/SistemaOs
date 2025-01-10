@@ -20,6 +20,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('main.home')->middle
 
 Route::post('registerUser',[RegisterController::class, 'register'])->name('register');
 
+Route::get('/cidade',[HomeController::class, 'teste'])->name('teste');
+
 Route::get('/',[LoginController::class, 'destroy'])->name('loggout');
 
 
