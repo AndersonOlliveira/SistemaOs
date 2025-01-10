@@ -12,7 +12,7 @@ Route::post('/processarLogin', [LoginController::class, 'processLogin'])->name('
 //alterarSenha
 Route::post('/processarAlterar', [LoginController::class, 'processAlterarSenha'])->name('processarAlterar');
 
-Route::get('/AdicionarUser', [HomeController::class, 'adduser'])->name('addUser');
+Route::get('/AdicionarUser', [HomeController::class, 'adduser'])->name('addUser')->middleware('auth');
 
 Route::get('/alterarSenha', [LoginController::class, 'alterarSenha'])->name('alterarSenha')->middleware('auth');
 
