@@ -8,8 +8,7 @@
    <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="js/datatables/datatables.net-dt/css/jquery.dataTables.css">
-    <script src="js/bootstrap/js/orginalCol.js"></script>
-    <script src="js/Scripts.js"></script>
+
     <title>Visium Os</title>
   </head>
  <body>
@@ -27,7 +26,10 @@
     </main>
 </body>
 
+
    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+   <script src="js/bootstrap/js/orginalCol.js"></script>
+   <script src="js/Scripts.js"></script>
      <script src="js/jquery/jquery/dist/jquery.min.js"></script>
       <script src="js/popper/@popperjs/core/dist/umd/popper-base.min.js"> </script>
       <script src="js/datatables/datatables.net/js/jquery.dataTables.min.js"> </script>
@@ -39,5 +41,8 @@
       <script src="js/datatables/buttons/buttons.html5.min.js"> </script>
       <script src="js/bootstrap/js/bootstrap.min.js"> </script>
       <script src="js/bootstrap/js/bootstrap.bundle.js"> </script>
+
+   @stack('scripts')  <!-- Aqui você inclui os scripts específicos de cada página -->
+   <script src="Scripts/cadastroUser.js"> </script>
  </body>
 </html>

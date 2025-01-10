@@ -21,6 +21,25 @@
         <img src="icons/ordem.png" width="30" height="30" class="d-inline-block align-top" alt="">
         Visium OS
       </a>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+
+        <a class="nav-link active"><img src="icons/calendário-20.png">{{ \Carbon\Carbon::now()->format('d/m/Y') }}</a>
+      </li>
+    </ul>
+      @if(Auth()->check())
+      <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link active" href="addUsuario/listaUsuarios.php"><img src="icons/icons8-usuário-de-gênero-neutro-20.png">{{auth()->user()->login}}
+         </a>
+      </li>
+   </ul>
+      @endif
+      <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap" >
+        <a class="nav-link" href="{{route('loggout')}}">Sair</a>
+      </li>
+    </ul>
 </nav>
     </header>
 

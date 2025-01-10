@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FormularioResquest;
+use App\Models\User;
 use App\Models\UsuariosTb;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,16 +22,22 @@ class RegisterController extends Controller
 
       if(!empty($dados)){
 
+        if(!isset($dados->selecionar)){
+
+            return back()->withInput()->with('msg', 'Campos não podem ser vazios c');
+        }
          //vou procurar no banco se tem user cadastrado
-
-         $procurar = UsuariosTb::where(['login' => $dados->login, 'email' => $dados->email])->first();
-
-          if($procurar == null) {
-
-            //dd($dados);
+         $procurar = User::where(['login' => $dados->login, 'email' => $dados->email])->first();
 
 
-             switch ($dados->selecionar) {
+
+          if($procurar != null) {
+        // dd('e dirente de null');
+          return back()->withInput()->with('msg', 'Dados Enviados já utilizado por outro Usuário');
+
+        }else{
+
+            switch ($dados->selecionar) {
                 case 0:
                     $cadastroUsers =  "User";
                     break;
@@ -89,74 +96,43 @@ class RegisterController extends Controller
                         $projetoVisium = 0;
                         break;
                 }
-               $senha = Hash::make($dados->senha);
+
+                 $senha = Hash::make($dados->senha);
+
 
                  DB::beginTransaction();
 
-               try {
-                   // Dados para a inserção do usuário
-                   $userData = [
-                       'nome' => $dados->nome,
+                  try{
+                    $userData = [
+                       'name' => $dados->nome,
                        'login' => $dados->login,
                        'email' => $dados->email,
-                       'senha' => $senha,
+                       'password' => $senha,
                        'nivel' => $dados->selecionar,
                        'tipoUser' => $cadastroUsers,
-                       'data_cadastro' => now(),
-                   ];
-
-                  // dd($userData);
-                   $userId = DB::table('tb_usuarios')->insertGetId($userData);
-
-         // Dados para a inserção no acesso
-            $accessData = [
+                    ];
+                    $userId = DB::table('users')->insertGetId($userData);// Dados para a inserção no acesso
+              $accessData = [
                 'usuario_id' => $userId,
                 'consultar' => $consultar,
                 'incluir' => $incluir,
                 'editar' => $editar,
                 'excluir' => $excluir,
                 'data' => now(),
-            ];
+               ];
+                   DB::table('acessos')->insert($accessData);
+                   DB::commit();
+                   return back()->withInput()->with('msg', 'Sucesso ao inserir Usuário');
+                }catch(\Exception $e) {
+                    return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
+                    DB::rollBack();
+                }
 
-            // Inserção no acesso
-            DB::table('acessos')->insert($accessData);
+           }
+      }
+       else{
 
-            // Commit da transação
-            DB::commit();
-
-
-   }catch (\Exception $e) {
-
-                    // Rollback da transação em caso de erro
-         DB::rollBack();
- }
-
-
-
-
-             //vou inserir no banco na tabela de usuarios e acessos
-
-            //  DB::table('tb_usuarios')->insertUsing(
-            //     ['user_id', 'title', 'content'], // colunas da tabela `posts`
-            //     function ($query) {
-            //         $query->from('users')
-            //               ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
-            //               ->select('users.id as user_id', 'profiles.title', 'profiles.content')
-            //               ->whereNotNull('profiles.title');
-            //     }
-            // );
-
-          }
-        // dd($procurar);
-
-        return back()->withInput()->with('msg', 'Informações já utilizadas');
-
-
-         } else{
-
-         return back()->withInput()->with('msg', 'Campos não podem ser vazios');
-
-
+            return back()->withInput()->with('msg', 'Campos não podem ser vazios');
       }
 
 

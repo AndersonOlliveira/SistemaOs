@@ -30,4 +30,14 @@ class FormularioResquest extends FormRequest
 
         ];
     }
-}
+        public function messages() :array {
+            return [
+                'nome.required' => 'O campo :Nome é obrigatório.',
+                'login.required' => 'O campo :Login dé obrigatório.',
+                'senha.required' => 'O campo :Senha ré obrigatório..',
+                'selecionar.required' => 'O campo :Seleciona obrigatório.',
+                'email.required' => 'O campo :Email é obrigatório.'
+            ];
+        }
+    }
+

@@ -43,7 +43,7 @@ return [
 
         'custom_guard' => [
             'driver' => 'session',
-            'provider' => 'tb_usuarios', // Nome do
+            'provider' => 'tb_usuarios',
     ],
     ],
 
@@ -71,9 +71,9 @@ return [
         ],
 
         'tb_usuarios' => [
-            'driver' => 'database',
+            'driver' => 'eloquent',
             'table' => 'tb_usuarios',
-            'model' => App\Models\UsuariosTb::class,
+            'model' => env('AUTH_MODEL', App\Models\UsuariosTb::class),
         ],
     ],
 

@@ -14,11 +14,13 @@ Route::post('/processarAlterar', [LoginController::class, 'processAlterarSenha']
 
 Route::get('/AdicionarUser', [HomeController::class, 'adduser'])->name('addUser');
 
-Route::get('/alterarSenha', [LoginController::class, 'alterarSenha'])->name('alterarSenha');
+Route::get('/alterarSenha', [LoginController::class, 'alterarSenha'])->name('alterarSenha')->middleware('auth');
 
-Route::get('/home', [HomeController::class, 'index'])->name('main.home');
+Route::get('/home', [HomeController::class, 'index'])->name('main.home')->middleware('auth');
 
 Route::post('registerUser',[RegisterController::class, 'register'])->name('register');
+
+Route::get('/',[LoginController::class, 'destroy'])->name('loggout');
 
 
 
