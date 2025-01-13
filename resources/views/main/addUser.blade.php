@@ -4,11 +4,6 @@
 
 @section('content')
 
-   @push('scripts')
-        <script src="{{ asset('Scripts/cadastroUser.js') }}"></script>
-    @endpush
-
-
 <div class="container-fluid">
 
       <div class="col">

@@ -24,7 +24,7 @@ class HomeController extends Controller
 
      }
 
-     public function teste(){
+     public function cadastrarCluster(){
 
         return view('main.cidades');
      }

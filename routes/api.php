@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\CidadeController;
+use App\Http\Controllers\api\CluesterApicontroller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/cidades', [CidadeController::class, 'index']);
+Route::get('/ApiCluster', [CluesterApicontroller::class, 'index'])->name('ClusterApi');
+

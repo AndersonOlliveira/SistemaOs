@@ -15,7 +15,7 @@ var MvcController = new function () {
         }).always(function () { StopLoad(); });
     }
 };
-console.log('acessei o java script');
+console.log('acessei o java script da pagina JavaScript');
 
 function StarLoad() {
     // Exibe a barra de progresso

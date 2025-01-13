@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="js/datatables/datatables.net-dt/css/jquery.dataTables.css">
     <script src="js/bootstrap/js/orginalCol.js"></script>
+    <script src="js/ajax.js"></script>
     <script src="js/Scripts.js"></script>
+
+
     <title>Visium Os</title>
 </head>
 <body>
@@ -64,7 +67,7 @@
                             <hr>
                             <li><img src="icons/administrador.png" width="15" height="15"><a href="addUsuario/listaUsuarios.php" style="cursor: pointer;">Listar Usuários</a></li>
                             <hr>
-                            <li><img src="icons/administrador.png" width="15" height="15"><a href="{{route('teste')}}" style="cursor: pointer;">teste</a></li>
+                            <li><img src="icons/administrador.png" width="15" height="15"><a href="{{route('cluster')}}" style="cursor: pointer;">Cad: Cluster</a></li>
                         </ul>
                     </div> <!-- para terceiro botão -->
             </nav>
@@ -78,17 +81,18 @@
 </body>
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="js/jquery/jquery/dist/jquery.min.js"></script>
-<script src="js/popper/@popperjs/core/dist/umd/popper-base.min.js"> </script>
-<script src="js/datatables/datatables.net/js/jquery.dataTables.min.js"> </script>
-<script src="js/datatables/buttons/dataTables.buttons.min.js"> </script>
-<script src="js/datatables/buttons/jszip.min.js"> </script>
-<script src="js/datatables/buttons/pdfmake.min.js"> </script>
-<script src="js/datatables/buttons/vfs_fonts.js"> </script>
-<script src="js/datatables/buttons/buttons.html5.min.js"> </script>
-<script src="js/bootstrap/js/bootstrap.bundle.js"> </script>
-<script src="js/code/jquery-3.2.1.slim.min.js"></script>
-<script src="js/bootstrap/js/bootstrap.min.js"></script>
+       <script src="js/moment/moment.min.js"></script>
+       <script src="js/jquery/jquery/dist/jquery.min.js"></script>
+       <script src="js/popper/@popperjs/core/dist/umd/popper-base.min.js"> </script>
+      <script src="js/datatables/datatables.net/js/jquery.dataTables.min.js"> </script>
+      <script src="js/datatables/buttons/dataTables.buttons.min.js"> </script>
+      <script src="js/datatables/buttons/jszip.min.js"> </script>
+      <script src="js/datatables/buttons/pdfmake.min.js"> </script>
+      <script src="js/datatables/buttons/vfs_fonts.js"> </script>
+      <script src="js/datatables/buttons/buttons.html5.min.js"> </script>
+      <script src="js/bootstrap/js/bootstrap.min.js"> </script>
+      <script src="js/bootstrap/js/bootstrap.bundle.js"> </script>
+
 
 
 </body>

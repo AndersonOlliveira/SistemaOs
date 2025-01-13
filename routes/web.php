@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\api\CluesterApicontroller;
+use App\Http\Controllers\ClusterContoller;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -20,9 +22,12 @@ Route::get('/home', [HomeController::class, 'index'])->name('main.home')->middle
 
 Route::post('registerUser',[RegisterController::class, 'register'])->name('register');
 
-Route::get('/cidade',[HomeController::class, 'teste'])->name('teste');
+Route::get('/CadastrarCluster',[HomeController::class, 'cadastrarCluster'])->name('cluster');
 
 Route::get('/',[LoginController::class, 'destroy'])->name('loggout');
+
+Route::post('/ProcessCluster',[ClusterContoller::class, 'processClustes'])->name('ProcessCluster');
+
 
 
 
