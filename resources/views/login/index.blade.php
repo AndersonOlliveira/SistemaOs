@@ -9,10 +9,9 @@
         <div class="card-login">
           <div class="card">
             <div class="card-header">
-             <img src="/icons/visium.png">
+             <img class="index" src="/icons/visium.png">
             </div>
             <div class="card-body">
-
               <form id="formulario" action="{{route('processarLogin')}}" method="POST"> <!--para onde eu vou enviar o post de preenchimento do formulario -->
                 @csrf
                 <div class="form-group">
@@ -23,17 +22,16 @@
                 <div class="form-group">
                   <input name="login" type="text" class="form-control" value="{{old('login')}}" autocomplete="on" required="" placeholder="Login">
                 </div>
+                <br>
                 <div class="form-group">
                   <input name="password" type="password" value="{{old('password')}}"  autocomplete="current-password" class="form-control" placeholder="Senha"></div>
 
                   <div class="text-danger">
 
                  </div>
-
+                 <br>
                 <input name="sendLogin" class="btn btn-lg btn-info btn-block botao" type="submit" value="Entrar"></input>
-
-
-                <div class="col-sm">
+               <div class="col-sm">
                  <a style="position: fixed;"  href="{{route('alterarSenha')}}">Esqueceu a senha?</a>
                 </div>
 

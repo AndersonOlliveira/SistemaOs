@@ -9,6 +9,12 @@
 
 }
 
+.index{
+     width: 150px;
+
+
+}
+
 #imagem {
     width: 30px;
     height: 30px;
@@ -43,7 +49,7 @@ a {
     color: black;
 }
 
-.chart-container {
+ .chart-container {
     max-width: 100%;
     /* Define a largura máxima do contêiner como 100% */
     overflow-x: auto;

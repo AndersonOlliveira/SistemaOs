@@ -4,6 +4,7 @@ use App\Http\Controllers\api\CluesterApicontroller;
 use App\Http\Controllers\ClusterContoller;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\NovaOsController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 //rota inicial
@@ -27,6 +28,10 @@ Route::get('/CadastrarCluster',[HomeController::class, 'cadastrarCluster'])->nam
 Route::get('/',[LoginController::class, 'destroy'])->name('loggout');
 
 Route::post('/ProcessCluster',[ClusterContoller::class, 'processClustes'])->name('ProcessCluster');
+
+
+Route::post('/ProcessOs',[NovaOsController::class, 'novaOs'])->name('ProcessNovaOs');
+
 
 
 
