@@ -85,11 +85,11 @@
        <script src="js/jquery/jquery/dist/jquery.min.js"></script>
        <script src="js/popper/@popperjs/core/dist/umd/popper-base.min.js"> </script>
       <script src="js/datatables/datatables.net/js/jquery.dataTables.min.js"> </script>
-      <script src="js/datatables/buttons/dataTables.buttons.min.js"> </script>
+      <!-- <script src="js/datatables/buttons/dataTables.buttons.min.js"> </script> -->
       <script src="js/datatables/buttons/jszip.min.js"> </script>
       <script src="js/datatables/buttons/pdfmake.min.js"> </script>
       <script src="js/datatables/buttons/vfs_fonts.js"> </script>
-      <script src="js/datatables/buttons/buttons.html5.min.js"> </script>
+      <!-- <script src="js/datatables/buttons/buttons.html5.min.js"> </script> -->
       <script src="js/bootstrap/js/bootstrap.min.js"> </script>
       <script src="js/bootstrap/js/bootstrap.bundle.js"> </script>
 

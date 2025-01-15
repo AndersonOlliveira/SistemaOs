@@ -79,8 +79,7 @@
   <input type="file" name="arquivos" value="enviar"/>
   <input type="submit" value="enviar"/>
  -->
-
- <table id="listaOs" class="display" style="width:100%">
+  <table id="listaOs" class="display" style="width:100%">
         <thead>
             <tr>
                 <th>id</th>
@@ -97,17 +96,14 @@
         </thead>
         <tbody>
             <tr>
-                <td>Tiger Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011-04-25</td>
-                <td>$320,800</td>
+
             </tr>
         </tbody>
         </table>
 
  <script src="{{ asset('Scripts/webApi/NovaOs.js')}}"></script>
+ <script src="{{ asset('js/ajax.js')}}"></script>
+
 
 
 @endsection
