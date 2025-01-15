@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\api\CluesterApicontroller;
 use App\Http\Controllers\ClusterContoller;
+use App\Http\Controllers\FilesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NovaOsController;
@@ -31,6 +32,8 @@ Route::post('/ProcessCluster',[ClusterContoller::class, 'processClustes'])->name
 
 
 Route::post('/ProcessOs',[NovaOsController::class, 'novaOs'])->name('ProcessNovaOs');
+
+Route::post('/files', [FilesController::class, 'ProcessArquivo'])->name('ProcessArquivo');
 
 
 

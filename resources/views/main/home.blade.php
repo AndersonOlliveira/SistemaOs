@@ -24,8 +24,7 @@
         <option name="cluster"> Selecione Cluster</option>
      </select>
     </div>
-
-  <div class="form-group col-md-4">
+ <div class="form-group col-md-4">
     <label for="inputAddress">Informe Endereço</label>
     <input type="text" name="endereco" class="form-control" id="inputAddress" placeholder="Digite o endereço">
   </div>
@@ -39,10 +38,6 @@
         <option>Selecione Classe</option>
      </select>
     </div>
-  <div class="form-group col-md-4">
-    <label for="inputAddress2">Evento Gerador</label>
-    <input type="text" name="envGerador" class="form-control" id="inputAddress2">
-  </div>
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputCity">Solicitante Claro</label>
@@ -54,7 +49,7 @@
     </div>
     <div class="form-group col-md-4">
       <label for="inputState">Hora Fim Atividade</label>
-      <input type="time" name="hoFim" class="form-control">
+      <input type="time" name="horFim" class="form-control">
     </div>
     <div class="form-group col-md-4">
     <label for="inputAddress2">Evento Gerador</label>
@@ -75,8 +70,44 @@
 </form>
   </div>
 </div>
+ <hr>
 
-<script src="{{ asset('Scripts/webApi/NovaOs.js')}}"></script>
+ <p>aqui vou exibir a listagem? </p>
+<!--
+   <form method="post" action="{{route('ProcessArquivo')}}" enctype="multipart/form-data">
+    @csrf
+  <input type="file" name="arquivos" value="enviar"/>
+  <input type="submit" value="enviar"/>
+ -->
+
+ <table id="listaOs" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Equipe</th>
+                <th>NomeCluster</th>
+                <th>Prefixo</th>
+                <th>data</th>
+                <th>endereco</th>
+                <th>Hora Inicio</th>
+                <th>Hora Fim</th>
+                <th>Solicitante Claro</th>
+                <th>Tipo Os</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tiger Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>2011-04-25</td>
+                <td>$320,800</td>
+            </tr>
+        </tbody>
+        </table>
+
+ <script src="{{ asset('Scripts/webApi/NovaOs.js')}}"></script>
 
 
 @endsection
