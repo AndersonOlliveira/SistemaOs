@@ -12,4 +12,7 @@ Route::get('/cidades', [CidadeController::class, 'index']);
 Route::get('/ApiCluster', [CluesterApicontroller::class, 'index'])->name('ClusterApi');
 Route::get('/ApiClasse', [classesController::class, 'index'])->name('ClassesApi');
 Route::get('/ListaOs', [ListaosController::class, 'index'])->name('listarOs');
+// Route::post('/adicionarOs', [ListaosController::class, 'adicionarOs'])->name('adicionarOs');
+Route::get('/ListaProdutos', [ListaosController::class, 'listaProdutos'])->name('listaProdutos');
+
 

@@ -5,105 +5,228 @@
 @section('content')
 
 <p>
-  <a class="btn btn-primary" data-toggle="collapse" href="#NovaOs" role="button" aria-expanded="false" aria-controls="collapseExample">
-   Nova Os
-  </a>
+    <a class="btn btn-primary" data-toggle="collapse" href="#NovaOs" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Nova Os
+    </a>
 </p>
 <div class="collapse" id="NovaOs">
-  <div class="card card-body">
-  <form method="post" action="{{route('ProcessNovaOs')}}">
-  @csrf
-  <div class="row align-items-start">
-    <div class="form-group col-md-4">
-      <label for="inputEmail4">Equipe</label>
-      <input type="text" name="nameEquipe" class="form-control" id="inputEmail4" placeholder="Digite a Equipe">
+    <div class="card card-body">
+        <form method="post" action="{{route('ProcessNovaOs')}}">
+            @csrf
+            <div class="row align-items-start">
+                <div class="form-group col-md-4">
+                    <label for="inputEmail4">Equipe</label>
+                    <input type="text" name="nameEquipe" class="form-control" id="inputEmail4" placeholder="Digite a Equipe">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputPassword4">Selecione Cluster</label>
+                    <select id="clusters" name="cluster" class="form-control">
+                        <option name="cluster"> Selecione Cluster</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputAddress">Informe Endereço</label>
+                    <input type="text" name="endereco" class="form-control" id="inputAddress" placeholder="Digite o endereço">
+                </div>
+                <div class="form-group col-md-4 ">
+                    <label for="inputAddress">Informe Data</label>
+                    <input type="date" name="data" class="form-control" id="inputAddress">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputPassword4">Selecione Classe</label>
+                    <select id="classes" name="classe" class="form-control">
+                        <option>Selecione Classe</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="inputCity">Solicitante Claro</label>
+                        <input type="text" name="solClaro" class="form-control" id="inputCity">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputState">Hora Inicio Atividade</label>
+                        <input type="time" name="hoInicio" class="form-control">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputState">Hora Fim Atividade</label>
+                        <input type="time" name="horFim" class="form-control">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputAddress2">Evento Gerador</label>
+                        <label for="inputState">Prefixo</label>
+                        <input type="type" name="Prefixo" class="form-control">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputState"> Numero Prefixo</label>
+                        <input type="type" name="NumPrefixo" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <button type="submit" class="btn btn-primary" name="salvar" value="enviar">Salvar </button>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="form-group col-md-4">
-      <label for="inputPassword4">Selecione Cluster</label>
-     <select id="clusters" name="cluster" class="form-control" >
-        <option name="cluster"> Selecione Cluster</option>
-     </select>
-    </div>
- <div class="form-group col-md-4">
-    <label for="inputAddress">Informe Endereço</label>
-    <input type="text" name="endereco" class="form-control" id="inputAddress" placeholder="Digite o endereço">
-  </div>
-  <div class="form-group col-md-4 ">
-    <label for="inputAddress">Informe Data</label>
-    <input type="date" name="data" class="form-control" id="inputAddress" >
-  </div>
-  <div class="form-group col-md-4">
-      <label for="inputPassword4">Selecione Classe</label>
-     <select id="classes" name="classe" class="form-control" >
-        <option>Selecione Classe</option>
-     </select>
-    </div>
-  <div class="form-row">
-    <div class="form-group col-md-4">
-      <label for="inputCity">Solicitante Claro</label>
-      <input type="text" name="solClaro" class="form-control" id="inputCity">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="inputState">Hora Inicio Atividade</label>
-      <input type="time" name="hoInicio" class="form-control">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="inputState">Hora Fim Atividade</label>
-      <input type="time" name="horFim" class="form-control">
-    </div>
-    <div class="form-group col-md-4">
-    <label for="inputAddress2">Evento Gerador</label>
-      <label for="inputState">Prefixo</label>
-      <input type="type" name="Prefixo" class="form-control">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="inputState"> Numero Prefixo</label>
-      <input type="type" name="NumPrefixo" class="form-control">
-    </div>
-  </div>
-  </div>
-  <div class="form-row">
-  <div class="form-group col-md-4">
-     <button type="submit" class="btn btn-primary" name="salvar" value="enviar" >Salvar </button>
-  </div>
-  </div>
-</form>
-  </div>
 </div>
- <hr>
+<hr>
 
- <p>aqui vou exibir a listagem? </p>
+<p>aqui vou exibir a listagem? </p>
 <!--
    <form method="post" action="{{route('ProcessArquivo')}}" enctype="multipart/form-data">
     @csrf
   <input type="file" name="arquivos" value="enviar"/>
   <input type="submit" value="enviar"/>
  -->
-  <table id="listaOs" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>id</th>
-                <th>Equipe</th>
-                <th>NomeCluster</th>
-                <th>Prefixo</th>
-                <th>data</th>
-                <th>endereco</th>
-                <th>Hora Inicio</th>
-                <th>Hora Fim</th>
-                <th>Solicitante Claro</th>
-                <th>Tipo Os</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
+<table id="listaOs" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Equipe</th>
+            <th>NomeCluster</th>
+            <th>Prefixo</th>
+            <th>data</th>
+            <th>endereco</th>
+            <th>Hora Inicio</th>
+            <th>Hora Fim</th>
+            <th>Solicitante Claro</th>
+            <th>Tipo Os</th>
+            <th>Opções</th>
 
-            </tr>
-        </tbody>
-        </table>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
 
- <script src="{{ asset('Scripts/webApi/NovaOs.js')}}"></script>
- <script src="{{ asset('js/ajax.js')}}"></script>
-
+        </tr>
+    </tbody>
+</table>
 
 
-@endsection
+<!-- Modal complemento -->
+<div class="modal fade bd-example-modal-lg" id="modalAdicionar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Completar Os</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formAdicionar" method="post" action="{{route('adicionaDos')}}" enctype="multipart/form-data">
+                    @csrf
+                    <!-- Campos do Formulário -->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Informe OM CLARO</label>
+                                <input type="text" name="omClaro" id="omClaro" class="form-control" placeholder="Digite Om Claro">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Informe OS CLARO</label>
+                                <input type="text" name="osClaro" id="osClaro" class="form-control" placeholder="Digite Os Claro">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Foto Antes</label>
+                                <input type="file" name="fotoAntes" id="fotoAntes" class="form-control" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Foto Durante</label>
+                                <input type="file" name="fotoDurante" id="fotoDurante" class="form-control" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Foto Depois</label>
+                                <input type="file" name="fotoDepois" id="fotoDepois" class="form-control" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Foto Depois</label>
+                                <textarea type="textarea" name="observacoes" id="observacoes" class="form-control"> </textarea>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <!-- <input type="text" name="campoNome" id="campoNome" class="form-control" placeholder="Nome da OS">
+
+                        <input type="hidden" name="id" id="idos" class="form-control" placeholder="Nome da OS">
+                        <input type="text" name="campoEquipe" id="campoEquipe" class="form-control" placeholder="Equipe">
+                        <input type="file" name="campoFoto" id="campoFoto" class="form-control" /> -->
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <input type="submit" class="btn btn-primary" value="salvar" />
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal servicos -->
+<div class="modal fade bd-example-modal-lg" id="modalServicos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Serviços</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formServicos" method="post" action="{{route('adicionaServico')}}" enctype="multipart/form-data">
+                    @csrf
+                    <!-- Campos do Formulário -->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">
+                               <div class="container-fluid">
+                                    <div class="row">
+                                        <section id="conteudo">
+                                            <select class="form-select form-control-sm" id="produto" aria-label="Default select example">
+                                                <option>Selecione</option>
+                                                <input type="hidden" id="idDescricao" >
+                                               <a href="#" id="Adicionar">Adicionar</a>
+                                               <input type="hidden" name="idCluster" id="idos" >
+                                               <input type="hidden" name="idUser" id="idos"  value="{{auth()->user()->id}}" >
+                                               </select>
+                                     </div>
+                                    </section>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="nomeFruta">Produto:</label>
+                                        <input type="text" class="form-control" id="nomeProduto1"  />
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="descricao">Quantidade:</label>
+                                        <input type="text" class="form-control" id="quantidade1" />
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <!-- <input type="text" name="campoNome" id="campoNome" class="form-control" placeholder="Nome da OS">
+
+                        <input type="hidden" name="id" id="idos" class="form-control" placeholder="Nome da OS">
+                        <input type="text" name="campoEquipe" id="campoEquipe" class="form-control" placeholder="Equipe">
+                        <input type="file" name="campoFoto" id="campoFoto" class="form-control" /> -->
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <input type="submit" class="btn btn-primary" value="salvar" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('Scripts/webApi/NovaOs.js')}}"></script>
+    <script src="{{ asset('js/ajax.js')}}"></script>
+
+
+
+    @endsection

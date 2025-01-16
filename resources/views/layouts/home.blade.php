@@ -34,7 +34,7 @@
 
    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
-      <script src="js/teste.js"></script>
+      <!-- <script src="js/teste.js"></script> -->
       <script src="js/jsQuery.js"></script>
       <script src="js/jquery/jquery/dist/jquery.min.js"></script>
       <script src="js/popper/@popperjs/core/dist/umd/popper-base.min.js"> </script>
