@@ -15,4 +15,8 @@ Route::get('/ListaOs', [ListaosController::class, 'index'])->name('listarOs');
 // Route::post('/adicionarOs', [ListaosController::class, 'adicionarOs'])->name('adicionarOs');
 Route::get('/ListaProdutos', [ListaosController::class, 'listaProdutos'])->name('listaProdutos');
 
+Route::get('/ListaDadosClusters', [ListaosController::class, 'listaDadosCluster'])->name('listaDados');
+
+Route::get('/Listateste/{cluster}/{idUnico}', [ListaosController::class, 'teste'])->name('listateste');
+
 

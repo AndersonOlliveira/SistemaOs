@@ -18,6 +18,8 @@ class ClusterContoller extends Controller
          }
         //validar input
           $tabela = ClusterModels::where(['NomeCluster' => $request->cidades ,'UfCluster' => $request->uf]);
+
+           $numeroRan = date('d') + date('m') + date('y') + date('h') + date('i') + date('s');
           //dd($tabela->count());
           //verifico sem registro já criado
           if($tabela->count() > 0){
@@ -32,6 +34,7 @@ class ClusterContoller extends Controller
                  'NomeCluster' => $request->cidades,
                  'UfCluster' => $request->uf,
                  'idUserCricaoCluster' => $request->idUser,
+                 'idUnicoCluster' => $numeroRan,
                  'created_at' => now(),
               ];
 

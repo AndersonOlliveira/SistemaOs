@@ -103,6 +103,32 @@
     </tbody>
 </table>
 
+<!-- LISTAR DADOS MODAL EM FORMATO TABELA -->
+<div class="modal fade bd-example-modal-lg" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <table id="ListaDados" class="table table-striped table-bordered"  ellspacing="0"  style="width:100%">
+    <thead>
+        <tr>
+       </tr>
+    </thead>
+    <tbody>
+
+</tbody>
+</table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal complemento -->
 <div class="modal fade bd-example-modal-lg" id="modalAdicionar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -149,6 +175,7 @@
 
                         </div>
                     </div>
+                    <input type="hidden" name="idUnico" id="idUnico">
                     <!-- <input type="text" name="campoNome" id="campoNome" class="form-control" placeholder="Nome da OS">
 
                         <input type="hidden" name="id" id="idos" class="form-control" placeholder="Nome da OS">
@@ -180,23 +207,24 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-3">
-                               <div class="container-fluid">
+                                <div class="container-fluid">
                                     <div class="row">
                                         <section id="conteudo">
                                             <select class="form-select form-control-sm" id="produto" aria-label="Default select example">
                                                 <option>Selecione</option>
-                                                <input type="hidden" id="idDescricao" >
-                                               <a href="#" id="Adicionar">Adicionar</a>
-                                               <input type="hidden" name="idCluster" id="idos" >
-                                               <input type="hidden" name="idUser" id="idos"  value="{{auth()->user()->id}}" >
-                                               </select>
-                                     </div>
+                                                <input type="hidden" id="idDescricao">
+                                                <a href="#" id="Adicionar">Adicionar</a>
+                                                <input type="hidden" name="idCluster" id="idos">
+                                                <input type="hidden" name="idUser" id="idos" value="{{auth()->user()->id}}">
+                                                <input type="hidden" name="idUnico" id="idUnicos">
+                                            </select>
+                                    </div>
                                     </section>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label for="nomeFruta">Produto:</label>
-                                        <input type="text" class="form-control" id="nomeProduto1"  />
+                                        <input type="text" class="form-control" id="nomeProduto1" />
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="descricao">Quantidade:</label>
@@ -224,9 +252,11 @@
         </div>
     </div>
 
-    <script src="{{ asset('Scripts/webApi/NovaOs.js')}}"></script>
-    <script src="{{ asset('js/ajax.js')}}"></script>
+    <!-- Modal servicos -->
+
+        <script src="{{ asset('Scripts/webApi/NovaOs.js')}}"></script>
+        <script src="{{ asset('js/ajax.js')}}"></script>
 
 
 
-    @endsection
+        @endsection

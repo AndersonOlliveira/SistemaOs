@@ -27,6 +27,7 @@ class Cadastroos extends Model
                   'os.horFim',
                   'os.solClaro',
                   'os.solClaro',
+                  'os.idUnicoCluster',
                   DB::raw("CONCAT(Prefixo, '-', NumPrefixo) as Prefixo")
               )
               ->get();

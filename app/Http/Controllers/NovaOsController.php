@@ -27,9 +27,11 @@ class NovaOsController extends Controller
         // dd($dadosOs);
 
         //preparar para inserir
+        $numeroRan = date('d') + date('m') + date('y') + date('h') + date('i') + date('s');
 
         DB::beginTransaction();
         try {
+
             $dadosInsert = [
                 'Equipe' => $dadosOs->nameEquipe,
                 'data' => $dadosOs->data,
@@ -41,6 +43,7 @@ class NovaOsController extends Controller
                 'solClaro' => $dadosOs->solClaro,
                 'Prefixo' => $dadosOs->Prefixo,
                 'NumPrefixo'  => $dadosOs->NumPrefixo,
+                'idUnicoCluster' => $numeroRan,
                 'created_at' => now()
             ];
 
@@ -61,10 +64,9 @@ class NovaOsController extends Controller
 
     public function adicionaServico(Request $retorno)
     {
+
+       /// dd($retorno);
      //adicionar uma coluna na tabela de cluster, onde vai ter um id randomico sera usado para inserir da tabela de cluster, e na tabela de produtos assim realiza a busca na tabela com o id randomico
-
-
-        dd($gera = rand(1,100));
 
         // aqui vou procurar o banco
         $produtos = [];
@@ -95,7 +97,6 @@ class NovaOsController extends Controller
 
             }
             DB::beginTransaction();
-
              try{
                 foreach ($produtos as $key => $value) {
                  $produtosinserts = [
@@ -104,13 +105,14 @@ class NovaOsController extends Controller
                     'idCidade' =>  $retorno->idCluster,
                     'idEstrangeiro' => $h,
                     'idUser' => $retorno->idUser,
+                    'idUnicoCluster' => $retorno->idUnico,
                     'created_at' => now(),
                  ];
                  DB::table('produtos_uso')->insert($produtosinserts);
                 }
                 //dd($produtosinserts);
 
-                   // DB::commit();
+                   DB::commit();
                     return back()->withInput()->with('msg', 'Sucesso ao inserir Dados');
                  }catch(\Exception $e) {
                       return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
@@ -133,12 +135,13 @@ class NovaOsController extends Controller
                    'idCidade' =>  $retorno->idCluster,
                    'idEstrangeiro' => $idEstrangeiro,
                    'idUser' => $retorno->idUser,
+                   'idUnicoCluster' => $retorno->idUnico,
                    'created_at' => now(),
                 ];
 
                 DB::table('produtos_uso')->insert($produtosinserts);
               }
-                //   DB::commit();
+                  DB::commit();
                    return back()->withInput()->with('msg', 'Sucesso ao inserir Dados');
                 }catch(\Exception $e) {
                    return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
