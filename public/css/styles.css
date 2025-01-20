@@ -59,3 +59,8 @@ a {
     overflow-y: auto;
     /* Adicione a barra de rolagem horizontal se o conteúdo ultrapassar a largura */
 }
+  .ajustarModal{
+    max-width: 100%;
+     width: auto;
+      display: table;
+}

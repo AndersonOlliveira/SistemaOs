@@ -6,7 +6,8 @@ use App\Models\Cadastroos;
 use App\Models\produtos_usos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Controllers\verificarExtensoes;
+use Illuminate\Support\Facades\Storage;
 
 class NovaOsController extends Controller
 {
@@ -60,12 +61,36 @@ class NovaOsController extends Controller
     }
 
     //receber dados adicionais da os
-    public function novosDadosOs(Request $retorno) {}
+    public function novosDadosOs(Request $retornoNovo) {
+
+         $array = ['fotoAnts' => $retornoNovo->fotoAntes, 'fotoDurante' => $retornoNovo->fotoDurante, 'fotosfotoDepois' => $retornoNovo->fotoDepois];
+
+         $validaFotos = $this->verificarExtensoes($array);
+            //se for valido
+          if($validaFotos == 'Continuar'){
+            //verifico se tem a pasta pasta par inserir.
+
+            $salvaFotos = $this->salvaArquivos($array, $retornoNovo->idUnico);
+
+             dd($salvaFotos);
+          }
+
+
+
+         //passo para verificar o tipo do arquivo se uma foto
+
+
+         //dd($retornoNovo->fotoAntes);
+
+
+
+
+    }
 
     public function adicionaServico(Request $retorno)
     {
 
-       /// dd($retorno);
+       //dd($retorno);
      //adicionar uma coluna na tabela de cluster, onde vai ter um id randomico sera usado para inserir da tabela de cluster, e na tabela de produtos assim realiza a busca na tabela com o id randomico
 
         // aqui vou procurar o banco
@@ -149,10 +174,87 @@ class NovaOsController extends Controller
                  }
 
             }
+        }
 
+        public function verificarExtensoes($array){
 
+            //  ; dd($array);
+              $arquivosEnviados = false;
+              $extensaoNecessaria =  ['png','jpeg','jpg'];
+              //$verificaExtensoes = $_FILES['files']['name'];
+              if($array){
+                $retornoExtensao = [];
+                foreach($array as $nomesArquivos){
+
+                   $retornoExtensao[] = strtolower($nomesArquivos->getMimeType());
+
+                }
+
+                $formatosValidos = ['image/png', 'image/jpg', 'image/jpeg'];
+
+                // Verificando se todos os arquivos são válidos
+                foreach ($retornoExtensao as $extensao) {
+                    if (!in_array($extensao, $formatosValidos)) {
+                        // Se algum arquivo não for válido
+                        $refArquiovos = 'Por favor Enviar fotos no formato PNG ou Jpg';
+                        return $refArquiovos;
+                    }
+                }
+
+                // Se todos os arquivos forem válidos
+                $refArquiovos = 'Continuar';
+                return $refArquiovos;
+            }
 
 
 
     }
-}
+
+    public function salvaArquivos($dados,$id){
+        //passo o id para verificar se existe se existir adiciono caso náo crio
+        if(is_dir("image/$id")){
+           // dd($dados);
+
+          }else{
+             //dd('ñ tem diretorio');
+             $pastas = ['Antes', 'Durante', 'Depois'];
+
+             // Criando a pasta principal do ID, se não existir
+             $diretorioPrincipal = "image/$id";
+             //dd($diretorioPrincipal);
+
+             if (!Storage::exists($diretorioPrincipal)) {
+                 Storage::makeDirectory($diretorioPrincipal); // Cria a pasta principal
+             }
+
+             // Criando as subpastas dentro da pasta do ID
+             foreach ($pastas as $pasta) {
+                 $caminho = "$diretorioPrincipal/$pasta";
+                 if (!Storage::exists($caminho)) {
+                     Storage::makeDirectory($caminho); // Cria a subpasta
+                 }
+             }
+
+             // Agora você pode salvar os dados nas respectivas pastas
+             $dados = "Conteúdo do arquivo";
+
+             // Salvando um arquivo dentro da pasta "Antes"
+             Storage::put("$diretorioPrincipal/Antes/arquivo.txt", $dados);
+
+             // Salvando um arquivo dentro da pasta "Durante"
+             Storage::put("$diretorioPrincipal/Durante/arquivo.txt", $dados);
+
+             // Salvando um arquivo dentro da pasta "Depois"
+             Storage::put("$diretorioPrincipal/Depois/arquivo.txt", $dados);
+            //dd($dados);
+
+
+
+
+
+
+
+          }
+    }
+ }
+

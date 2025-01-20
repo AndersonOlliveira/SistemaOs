@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('produtos_uso', function (Blueprint $table) {
-            $table->integer('idUnicoCluster')->unique();
+        Schema::table('completo_os', function (Blueprint $table) {
+
+            $table->foreign('idUnicoClusterComple')->references('idUnicoCluster')->on('cadastro_os');
+
         });
+
     }
 
     /**
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('produtos_uso', function (Blueprint $table) {
-             $table->dropColumn('idUnicoCluster');
-        });
+        //
     }
 };

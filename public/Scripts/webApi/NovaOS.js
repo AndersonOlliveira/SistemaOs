@@ -67,7 +67,7 @@ function ListarDadosRota(rowId,rowIdUnico){
     success: function(response) {
       if(response.status == 1) {
 
-         alert(response.dados);
+       alert('Dados Não localizados Por favor preencha envie os dados' );
 
         }else{
           var dados = response.dados
@@ -85,18 +85,27 @@ function ListarDadosRota(rowId,rowIdUnico){
 
 function montarTabela(dados){
      tabelaData = [];
-   $.each(dados, function (i, val) {
+
+     //console.log(dados);
+
+     $.each(dados, function (i, val) {
         // Append tem a função de inserir
          // Adicionando os dados no array para preencher a tabela
          var items = val.item;
          var descricoes = val.descricao;
-         var itemComDescription = items.concat('-' + descricoes);
+       //  var itemComDescription = items.concat('-' + descricoes);
+         var itemComDescription = (items ? items: 'Valor não disponível') + '-' + (descricoes ? descricoes: 'Descrição não disponível');
+
+         var total = val.valor * val.QuantidadeProd;
+         let valorFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
          $('#staticBackdrop').modal('show');
          tabelaData.push({
             id: val.id,
             descripion: itemComDescription,
             valor: val.valor,
-            quantidade: val.QuantidadeProd
+            quantidade: val.QuantidadeProd,
+            total: valorFormatado
         });
     });
   // Inicializando o DataTable
@@ -121,7 +130,8 @@ function montarTabela(dados){
             { data: 'id' },
             { data: 'descripion' },
             { data: 'valor' },
-            { data: 'quantidade' }
+            { data: 'quantidade' },
+            { data: 'total' }
         ]
     });
 }
@@ -201,7 +211,7 @@ function CarregaOs() {
                 { // Coluna para os botões
                     data: null,
                     render: function (data, type, row) {
-                        return '<button class="btn btn-warning btnEditar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '"  data-target=".bd-example-modal-lg">Complentar Os</button>';
+                        return '<button class="btn btn-warning btnEditar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '"  data-target=".bd-example-modal-lg">Complentar Os</button>';
                     }
 
 
@@ -324,16 +334,23 @@ function CarregaProdutos() {
         success: function (response) {
             if (response.Status == 2) {
                 var dados = response.data;
-                //console.log(dados);
-                // $('#clusters').append($("<option>" ,{ value: '',  text: 'Selecione Cluster'}));
+
+                // $('#material').change(function() {
+                //     if ($(this).is(':checked')) {
+                //         var checkboxValue = $(this).val();  // Valor da checkbox (Material)
+                //         alert('Valor da checkbox: ' + checkboxValue);  }
+                // });
+
                 $.each(dados, function (i, val) {
+                    // Append tem a função de inserir
 
-                   // Append tem a função de inserir
-
-                    $('#produto').append($("<option>", { value: val.id, text: val.descricao }));
-                    $('#idDescricao').append($("<input>", { value: val.id, text: val.id }));
+                    var concaternart = (val.item ? val.item : 'Valor não disponível') + '-' + (val.descricao ? val.descricao : 'Descrição não disponível');
+                   /// console.log(concaternart);
+                        $('#produto').append($("<option>", { value: val.id, text: concaternart }));
+                        $('#idDescricao').append($("<input>", { value: val.id, text: val.id }));
 
                  });
+
             } else {
                 alert(response.message);
             }
@@ -354,11 +371,12 @@ function CarregaProdutos() {
 
     $(document).on('click', '#Adicionar', function () {
         count++;
-        var inputText2 = '<br><label for="nomeProduto">Produto estou adiciando aqui:</label><input type="text" class="form-control" name="nomeProduto' + count + '" id="nomeProduto' + count + '" value=""/>';
-        var inputText4 = '<br> <input type="hidden" class="form-control" id="idDescricao' + count + '" name="Idproduto' + count + '" value="" />';
-        var inputText = '<br><label for="descricao">Quantidade:</label><input type="text" class="form-control" name="quantidade' + count + '" id="quantidade' + count + '" value=""/>';
-
-
+        var div = '<div class="d-flex flex-row">';  // Início da div flexbox
+         var inputText2 = '<div class="p-2"><label for="nomeProduto">Produto estou adiciando aqui:</label><input type="text" class="form-control" name="nomeProduto' + count + '" id="nomeProduto' + count + '" value=""/></div>';
+         var inputText4 = '<input type="hidden" class="form-control" id="idDescricao' + count + '" name="Idproduto' + count + '" value="" />';
+         var inputText = '<div class="p-2"><label for="descricao">Quantidade:</label><input type="text" class="form-control" name="quantidade' + count + '" id="quantidade' + count + '" value=""/></div>';
+        div += '</div>';
+        $('#conteudo').append(div);
         $('#conteudo').append(inputText2);
         $('#conteudo').append(inputText4);
         $('#conteudo').append(inputText);

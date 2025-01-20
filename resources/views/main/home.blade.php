@@ -105,16 +105,21 @@
 
 <!-- LISTAR DADOS MODAL EM FORMATO TABELA -->
 <div class="modal fade bd-example-modal-lg" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg" id="ajuste modal" style="max-width: 100%; width: auto; display: table;">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Lista Produtos utilizados</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
       <table id="ListaDados" class="table table-striped table-bordered"  ellspacing="0"  style="width:100%">
     <thead>
         <tr>
+            <td>id</td>
+            <td>Descrição</td>
+            <td>Valor Unitario</td>
+            <td>Quantidade</td>
+            <td>Total</td>
        </tr>
     </thead>
     <tbody>
@@ -123,8 +128,8 @@
 </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <!-- <button type="button" class="btn btn-primary">U</button> -->
       </div>
     </div>
   </div>
@@ -171,11 +176,12 @@
                                 <label>Foto Depois</label>
                                 <textarea type="textarea" name="observacoes" id="observacoes" class="form-control"> </textarea>
                             </div>
-
-
                         </div>
                     </div>
                     <input type="hidden" name="idUnico" id="idUnico">
+                    <input type="hidden" name="idCluster" id="idos">
+                    <input type="hidden" name="idUser" id="idos" value="{{auth()->user()->id}}">
+
                     <!-- <input type="text" name="campoNome" id="campoNome" class="form-control" placeholder="Nome da OS">
 
                         <input type="hidden" name="id" id="idos" class="form-control" placeholder="Nome da OS">
@@ -205,23 +211,28 @@
                     @csrf
                     <!-- Campos do Formulário -->
                     <div class="container">
-                        <div class="row">
-                            <div class="col-md-3">
+                      <div class="d-flex">
+                            <div class="col-md-5">
                                 <div class="container-fluid">
-                                    <div class="row">
+                                    <div class="p-2">
+                                        <label>Tem uso de material? </label>
+                                        <!-- <input type="checkbox" value="All" id="material"/> -->
                                         <section id="conteudo">
                                             <select class="form-select form-control-sm" id="produto" aria-label="Default select example">
-                                                <option>Selecione</option>
+                                                <option>Selecione Serviços</option>
                                                 <input type="hidden" id="idDescricao">
+                                                <div class="row">
                                                 <a href="#" id="Adicionar">Adicionar</a>
                                                 <input type="hidden" name="idCluster" id="idos">
                                                 <input type="hidden" name="idUser" id="idos" value="{{auth()->user()->id}}">
                                                 <input type="hidden" name="idUnico" id="idUnicos">
+                                                </div>
                                             </select>
-                                    </div>
+                                          </div>
                                     </section>
+
                                 </div>
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="form-group col-md-6">
                                         <label for="nomeFruta">Produto:</label>
                                         <input type="text" class="form-control" id="nomeProduto1" />
@@ -230,8 +241,9 @@
                                         <label for="descricao">Quantidade:</label>
                                         <input type="text" class="form-control" id="quantidade1" />
                                     </div>
-                                </div>
+                                </div> -->
 
+<!-- #1241744223  protocolo samsung  3 dias -->
 
                             </div>
                         </div>
