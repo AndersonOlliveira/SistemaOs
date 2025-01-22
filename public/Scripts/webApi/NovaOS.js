@@ -190,13 +190,12 @@ function CarregaOs() {
 
     $(document).ready(function () {
         $('#listaOs').DataTable({
+            scrollX: true,
             ajax: {
                 url: '/api/ListaOs',
                 // method:'get', // URL da API
                 dataSrc: 'data',  // Define que a resposta será um array (sem chave para acessar)
-                scrollX : true,
-            },
-
+              },
             columns: [
                 { data: 'id' },
                 { data: 'Equipe' },
@@ -244,7 +243,7 @@ function CarregaOs() {
             var nomeCluster = $(this).data('nome');
             // Aqui você pode preencher o formulário do modal com os dados da linha
             $('#campoNome').val(nomeCluster);
-            $('#idos').val(rowId);
+            $('#idCluster').val(rowId);
             $('#idUnico').val(rowIdUnico);
             //preenchêr campos
 
@@ -258,7 +257,7 @@ function CarregaOs() {
             var nomeCluster = $(this).data('nome');
             // Aqui você pode preencher o formulário do modal com os dados da linha
             $('#campoNome').val(nomeCluster);
-            $('#idos').val(rowId);
+            $('#idCluster').val(rowId);
             $('#idUnicos').val(rowIdUnico);
             //preenchêr campos
 
@@ -273,7 +272,7 @@ function CarregaOs() {
             var nomeCluster = $(this).data('nome');
             // Aqui você pode preencher o formulário do modal com os dados da linha
             $('#campoNome').val(nomeCluster);
-            $('#idos').val(rowId);
+            $('#idCluster').val(rowId);
             $('#idUnicos').val(rowIdUnico);
             //preenchêr campos
 

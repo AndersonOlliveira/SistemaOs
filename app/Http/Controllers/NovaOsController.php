@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\verificarExtensoes;
 use Illuminate\Support\Facades\Storage;
 
+
 class NovaOsController extends Controller
 {
     public function novaOs(Request $dadosOs)
@@ -63,6 +64,20 @@ class NovaOsController extends Controller
     //receber dados adicionais da os
     public function novosDadosOs(Request $retornoNovo) {
 
+//           $fotoAntes[] = $retornoNovo->file('fotoAntes')->getClientOriginalName();
+
+//    if(is_object($fotoAntes) || is_iterable($fotoAntes)){
+
+//          foreach($fotoAntes as $arquivos){
+
+//             $extension = explode('.', $arquivos);
+//             //dd($extension);
+//               $uploadname = 'FontoAntes' . '.' . $extension[1];
+//             // dd($uploadname);
+//           }
+//         }
+
+
          $array = ['fotoAnts' => $retornoNovo->fotoAntes, 'fotoDurante' => $retornoNovo->fotoDurante, 'fotosfotoDepois' => $retornoNovo->fotoDepois];
 
          $validaFotos = $this->verificarExtensoes($array);
@@ -72,7 +87,7 @@ class NovaOsController extends Controller
 
             $salvaFotos = $this->salvaArquivos($array, $retornoNovo->idUnico);
 
-             dd($salvaFotos);
+           //  dd($salvaFotos);
           }
 
 
@@ -90,7 +105,7 @@ class NovaOsController extends Controller
     public function adicionaServico(Request $retorno)
     {
 
-       //dd($retorno);
+      //dd($retorno);
      //adicionar uma coluna na tabela de cluster, onde vai ter um id randomico sera usado para inserir da tabela de cluster, e na tabela de produtos assim realiza a busca na tabela com o id randomico
 
         // aqui vou procurar o banco
@@ -111,7 +126,7 @@ class NovaOsController extends Controller
 
 
         $dados = produtos_usos::where(['idCidade' => $retorno->idCluster])->select('idEstrangeiro')->groupBy('idEstrangeiro')->get();
-
+      //dd($retorno->idCluster);
         if ($dados->count() > 0) {
             //resultado for 0 vou inserir no banco e criar um idestrageiro
             foreach ($dados as $produtoUso) {
@@ -135,7 +150,7 @@ class NovaOsController extends Controller
                  ];
                  DB::table('produtos_uso')->insert($produtosinserts);
                 }
-                //dd($produtosinserts);
+               //  dd($produtosinserts);
 
                    DB::commit();
                     return back()->withInput()->with('msg', 'Sucesso ao inserir Dados');
@@ -153,8 +168,10 @@ class NovaOsController extends Controller
              $idEstrangeiro = 1;
               DB::beginTransaction();
               try{
+
                 foreach ($produtos as $key => $value) {
-                $produtosinserts = [
+
+                    $produtosinserts = [
                    'idProdutoDesc' => $value['idProduto'],
                    'QuantidadeProd' => $value['quantidade'],
                    'idCidade' =>  $retorno->idCluster,
@@ -165,6 +182,7 @@ class NovaOsController extends Controller
                 ];
 
                 DB::table('produtos_uso')->insert($produtosinserts);
+               // dd($produtosinserts);
               }
                   DB::commit();
                    return back()->withInput()->with('msg', 'Sucesso ao inserir Dados');
@@ -178,19 +196,25 @@ class NovaOsController extends Controller
 
         public function verificarExtensoes($array){
 
-            //  ; dd($array);
+             dd($array);
               $arquivosEnviados = false;
               $extensaoNecessaria =  ['png','jpeg','jpg'];
               //$verificaExtensoes = $_FILES['files']['name'];
               if($array){
                 $retornoExtensao = [];
-                foreach($array as $nomesArquivos){
 
-                   $retornoExtensao[] = strtolower($nomesArquivos->getMimeType());
+
+              //  dd($array);
+
+                foreach($array as $key => $nomesArquivos['fotoAnts']){
+                     $retornoExtensao[] = $nomesArquivos->getMimeType();
+
 
                 }
 
-                $formatosValidos = ['image/png', 'image/jpg', 'image/jpeg'];
+                dd($retornoExtensao);
+
+                $formatosValidos = ['image/png', 'image/jpg', 'image/jpeg','application/pdf'];
 
                 // Verificando se todos os arquivos são válidos
                 foreach ($retornoExtensao as $extensao) {
@@ -212,15 +236,23 @@ class NovaOsController extends Controller
 
     public function salvaArquivos($dados,$id){
         //passo o id para verificar se existe se existir adiciono caso náo crio
-        if(is_dir("image/$id")){
+        if(is_dir("public/image/$id")){
            // dd($dados);
 
-          }else{
-             //dd('ñ tem diretorio');
-             $pastas = ['Antes', 'Durante', 'Depois'];
+
+        }else{
+           // dd(pathinfo($dados->getOriginalFileName(), PATHINFO_FILENAME));
+
+
+              $dadosAntes = $dados['fotoAnts'];
+              $dadosDurante =  $dados['fotoDurante'];
+              $dadosDepois =  $dados['fotosfotoDepois'];
+
+              $pastas = ['Antes', 'Durante', 'Depois'];
 
              // Criando a pasta principal do ID, se não existir
-             $diretorioPrincipal = "image/$id";
+             $diretorioPrincipal = "public/image/$id";
+
              //dd($diretorioPrincipal);
 
              if (!Storage::exists($diretorioPrincipal)) {
@@ -235,20 +267,26 @@ class NovaOsController extends Controller
                  }
              }
 
-             // Agora você pode salvar os dados nas respectivas pastas
-             $dados = "Conteúdo do arquivo";
 
+
+            // foreach($dadosAntes as $dadosA){
+            //     dd($dadosA);
              // Salvando um arquivo dentro da pasta "Antes"
-             Storage::put("$diretorioPrincipal/Antes/arquivo.txt", $dados);
+             Storage::put("$diretorioPrincipal/Antes/", $dadosAntes);
+        //   /
+        // }
+           // foreach($dadosDurante as $dadosD){
 
              // Salvando um arquivo dentro da pasta "Durante"
-             Storage::put("$diretorioPrincipal/Durante/arquivo.txt", $dados);
+             Storage::put("$diretorioPrincipal/Durante/", $dadosDurante);
+            //}
 
-             // Salvando um arquivo dentro da pasta "Depois"
-             Storage::put("$diretorioPrincipal/Depois/arquivo.txt", $dados);
+            // foreach ($dadosDepois as  $dadosDe) {
+
+                // Salvando um arquivo dentro da pasta "Depois"
+             Storage::put("$diretorioPrincipal/Depois/", $dadosDurante);
             //dd($dados);
-
-
+       // }
 
 
 

@@ -84,7 +84,7 @@
        <script src="js/moment/moment.min.js"></script>
        <script src="js/jquery/jquery/dist/jquery.min.js"></script>
        <script src="js/popper/@popperjs/core/dist/umd/popper-base.min.js"> </script>
-      <script src="js/datatables/datatables.net/js/jquery.dataTables.min.js"> </script>
+       <script src="js/datatables/datatables.net/js/jquery.dataTables.min.js"> </script>
       <!-- ::<script src="js/datatables/buttons/dataTables.buttons.min.js"> </script> -->
       <script src="js/datatables/buttons/jszip.min.js"> </script>
       <script src="js/datatables/buttons/pdfmake.min.js"> </script>

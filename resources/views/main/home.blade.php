@@ -79,7 +79,7 @@
   <input type="file" name="arquivos" value="enviar"/>
   <input type="submit" value="enviar"/>
  -->
-<table id="listaOs" class="display" style="width:100%">
+<table id="listaOs" class="display nowrap" style="width:100%">
     <thead>
         <tr>
             <th>id</th>
@@ -117,7 +117,7 @@
         <tr>
             <td>id</td>
             <td>Descrição</td>
-            <td>Valor Unitario</td>
+            <td>Valor Unitário</td>
             <td>Quantidade</td>
             <td>Total</td>
        </tr>
@@ -159,19 +159,18 @@
                             </div>
                             <div class="col-md-6">
                                 <label>Foto Antes</label>
-                                <input type="file" name="fotoAntes" id="fotoAntes" class="form-control" />
+                                <input type="file" name="fotoAntes[]" id="fotoAntes" class="form-control" multiple="" />
                             </div>
 
                             <div class="col-md-6">
                                 <label>Foto Durante</label>
-                                <input type="file" name="fotoDurante" id="fotoDurante" class="form-control" />
+                                <input type="file" name="fotoDurante[]" id="fotoDurante" class="form-control" multiple="" />
                             </div>
 
                             <div class="col-md-6">
                                 <label>Foto Depois</label>
-                                <input type="file" name="fotoDepois" id="fotoDepois" class="form-control" />
+                                <input type="file" name="fotoDepois[]" id="fotoDepois" class="form-control" multiple="" />
                             </div>
-
                             <div class="col-md-6">
                                 <label>Foto Depois</label>
                                 <textarea type="textarea" name="observacoes" id="observacoes" class="form-control"> </textarea>
@@ -223,7 +222,7 @@
                                                 <input type="hidden" id="idDescricao">
                                                 <div class="row">
                                                 <a href="#" id="Adicionar">Adicionar</a>
-                                                <input type="hidden" name="idCluster" id="idos">
+                                                <input type="hidden" name="idCluster" id="idCluster">
                                                 <input type="hidden" name="idUser" id="idos" value="{{auth()->user()->id}}">
                                                 <input type="hidden" name="idUnico" id="idUnicos">
                                                 </div>
