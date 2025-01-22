@@ -7,6 +7,7 @@ use App\Models\produtos_usos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\verificarExtensoes;
+use App\Models\completo_os;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -62,51 +63,36 @@ class NovaOsController extends Controller
     }
 
     //receber dados adicionais da os
-    public function novosDadosOs(Request $retornoNovo) {
-
-//           $fotoAntes[] = $retornoNovo->file('fotoAntes')->getClientOriginalName();
-
-//    if(is_object($fotoAntes) || is_iterable($fotoAntes)){
-
-//          foreach($fotoAntes as $arquivos){
-
-//             $extension = explode('.', $arquivos);
-//             //dd($extension);
-//               $uploadname = 'FontoAntes' . '.' . $extension[1];
-//             // dd($uploadname);
-//           }
-//         }
+    public function novosDadosOs(Request $retornoNovo)
+    {
 
 
-         $array = ['fotoAnts' => $retornoNovo->fotoAntes, 'fotoDurante' => $retornoNovo->fotoDurante, 'fotosfotoDepois' => $retornoNovo->fotoDepois];
+        $fotoAntes = $retornoNovo->file('fotoAntes');
+        $fotoDurante = $retornoNovo->file('fotoDurante');
+        $fotosDepois = $retornoNovo->file('fotoDepois');
 
-         $validaFotos = $this->verificarExtensoes($array);
-            //se for valido
-          if($validaFotos == 'Continuar'){
-            //verifico se tem a pasta pasta par inserir.
+        // dd($retornoNovo->file());
 
+
+
+        $array = ['fotoAnts' => $fotoAntes, 'fotoDurante' => $fotoDurante, 'fotoDepois' => $fotosDepois];
+
+        $validaFotos = $this->verificarExtensoes($array);
+        if ($validaFotos) {
+            return $validaFotos;
+        } else {
+            //aqui vou salvar os arquivos
             $salvaFotos = $this->salvaArquivos($array, $retornoNovo->idUnico);
-
-           //  dd($salvaFotos);
-          }
-
-
-
-         //passo para verificar o tipo do arquivo se uma foto
-
-
-         //dd($retornoNovo->fotoAntes);
-
-
-
-
-    }
+            return $salvaFotos;
+           // dd('çai aqui');
+        }
+ }
 
     public function adicionaServico(Request $retorno)
     {
 
-      //dd($retorno);
-     //adicionar uma coluna na tabela de cluster, onde vai ter um id randomico sera usado para inserir da tabela de cluster, e na tabela de produtos assim realiza a busca na tabela com o id randomico
+        //dd($retorno);
+        //adicionar uma coluna na tabela de cluster, onde vai ter um id randomico sera usado para inserir da tabela de cluster, e na tabela de produtos assim realiza a busca na tabela com o id randomico
 
         // aqui vou procurar o banco
         $produtos = [];
@@ -126,7 +112,7 @@ class NovaOsController extends Controller
 
 
         $dados = produtos_usos::where(['idCidade' => $retorno->idCluster])->select('idEstrangeiro')->groupBy('idEstrangeiro')->get();
-      //dd($retorno->idCluster);
+        //dd($retorno->idCluster);
         if ($dados->count() > 0) {
             //resultado for 0 vou inserir no banco e criar um idestrageiro
             foreach ($dados as $produtoUso) {
@@ -134,165 +120,202 @@ class NovaOsController extends Controller
             }
 
             for ($h = 1; $h <= $produtoUso->idEstrangeiro; $h++) {
-
             }
             DB::beginTransaction();
-             try{
+            try {
                 foreach ($produtos as $key => $value) {
-                 $produtosinserts = [
-                    'idProdutoDesc' => $value['idProduto'],
-                    'QuantidadeProd' => $value['quantidade'],
-                    'idCidade' =>  $retorno->idCluster,
-                    'idEstrangeiro' => $h,
-                    'idUser' => $retorno->idUser,
-                    'idUnicoCluster' => $retorno->idUnico,
-                    'created_at' => now(),
-                 ];
-                 DB::table('produtos_uso')->insert($produtosinserts);
+                    $produtosinserts = [
+                        'idProdutoDesc' => $value['idProduto'],
+                        'QuantidadeProd' => $value['quantidade'],
+                        'idCidade' =>  $retorno->idCluster,
+                        'idEstrangeiro' => $h,
+                        'idUser' => $retorno->idUser,
+                        'idUnicoCluster' => $retorno->idUnico,
+                        'created_at' => now(),
+                    ];
+                    DB::table('produtos_uso')->insert($produtosinserts);
                 }
-               //  dd($produtosinserts);
+                //  dd($produtosinserts);
 
-                   DB::commit();
-                    return back()->withInput()->with('msg', 'Sucesso ao inserir Dados');
-                 }catch(\Exception $e) {
-                      return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
-                     DB::rollBack();
-                  }
+                DB::commit();
+                return back()->withInput()->with('msg', 'Sucesso ao inserir Dados');
+            } catch (\Exception $e) {
+                return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
+                DB::rollBack();
+            }
 
 
 
             //o resultado que fica aqui e o que esta disponivel para uso na sequencia.
 
-          }else{
+        } else {
 
-             $idEstrangeiro = 1;
-              DB::beginTransaction();
-              try{
+            $idEstrangeiro = 1;
+            DB::beginTransaction();
+            try {
 
                 foreach ($produtos as $key => $value) {
 
                     $produtosinserts = [
-                   'idProdutoDesc' => $value['idProduto'],
-                   'QuantidadeProd' => $value['quantidade'],
-                   'idCidade' =>  $retorno->idCluster,
-                   'idEstrangeiro' => $idEstrangeiro,
-                   'idUser' => $retorno->idUser,
-                   'idUnicoCluster' => $retorno->idUnico,
-                   'created_at' => now(),
-                ];
+                        'idProdutoDesc' => $value['idProduto'],
+                        'QuantidadeProd' => $value['quantidade'],
+                        'idCidade' =>  $retorno->idCluster,
+                        'idEstrangeiro' => $idEstrangeiro,
+                        'idUser' => $retorno->idUser,
+                        'idUnicoCluster' => $retorno->idUnico,
+                        'created_at' => now(),
+                    ];
 
-                DB::table('produtos_uso')->insert($produtosinserts);
-               // dd($produtosinserts);
-              }
-                  DB::commit();
-                   return back()->withInput()->with('msg', 'Sucesso ao inserir Dados');
-                }catch(\Exception $e) {
-                   return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
-                    DB::rollBack();
-                 }
+                    DB::table('produtos_uso')->insert($produtosinserts);
+                    // dd($produtosinserts);
+                }
+                DB::commit();
+                return back()->withInput()->with('msg', 'Sucesso ao inserir Dados');
+            } catch (\Exception $e) {
+                return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
+                DB::rollBack();
+            }
+        }
+    }
 
+    public function verificarExtensoes($array)
+    {
+
+        //dd($array);
+        $retornoResultado = [];
+        $extensoesValidas = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'pdf'];
+        $fotoAntes = $array['fotoAnts'];
+        $fotoDurante = $array['fotoDurante'];
+        $fotosDepois = $array['fotoDepois'];
+
+        // dd($fotosDepois);
+        foreach ($fotoAntes as $value) {
+            $extensao = $value->getClientOriginalExtension();  // Retorna a extensão original do arquivo
+
+            // Verificando se a extensão é válida
+            if (!in_array(strtolower($extensao), $extensoesValidas)) {
+                return redirect()->back()->with('msg', 'Arquivos enviados precisam ser no formato Img, Pdf');
             }
         }
 
-        public function verificarExtensoes($array){
+        // Percorrendo as fotos durante
+        foreach ($fotoDurante as $value) {
+            $extensao = $value->getClientOriginalExtension();  // Retorna a extensão original do arquivo
 
-             dd($array);
-              $arquivosEnviados = false;
-              $extensaoNecessaria =  ['png','jpeg','jpg'];
-              //$verificaExtensoes = $_FILES['files']['name'];
-              if($array){
-                $retornoExtensao = [];
+            // Verificando se a extensão é válida
+            if (!in_array(strtolower($extensao), $extensoesValidas)) {
+                return redirect()->back()->with('msg', 'Arquivos enviados precisam ser no formato Img, Pdf');
+            }
+        }
+        foreach ($fotosDepois as $value) {
+            $extensao = $value->getClientOriginalExtension();  // Retorna a extensão original do arquivo
 
+            // Verificando se a extensão é válida
+            if (!in_array(strtolower($extensao), $extensoesValidas)) {
+                return redirect()->back()->with('msg', 'Arquivos enviados precisam ser no formato Img, Pdf');
+            }
+        }
+    }
+    public function salvaArquivos($dados, $id)
+    {
+        //passo o id para verificar se existe se existir adiciono caso náo crio
+        if (is_dir("public/image/$id")) {
+            //dd($dados);
+        } else {
+            // dd(pathinfo($dados->getOriginalFileName(), PATHINFO_FILENAME));
 
-              //  dd($array);
+            //dd($dados);
 
-                foreach($array as $key => $nomesArquivos['fotoAnts']){
-                     $retornoExtensao[] = $nomesArquivos->getMimeType();
+            $dadosAntes = $dados['fotoAnts'];
+            $dadosDurante =  $dados['fotoDurante'];
+            $dadosDepois =  $dados['fotoDepois'];
 
+            $pastas = ['Antes', 'Durante', 'Depois'];
 
+            // Criando a pasta principal do ID, se não existir
+            $diretorioPrincipal = "public/image/$id";
+
+            //dd($diretorioPrincipal);
+
+            if (!Storage::exists($diretorioPrincipal)) {
+                Storage::makeDirectory($diretorioPrincipal); // Cria a pasta principal
+            }
+
+            // Criando as subpastas dentro da pasta do ID
+            foreach ($pastas as $pasta) {
+                $caminho = "$diretorioPrincipal/$pasta";
+                if (!Storage::exists($caminho)) {
+                    Storage::makeDirectory($caminho); // Cria a subpasta
                 }
-
-                dd($retornoExtensao);
-
-                $formatosValidos = ['image/png', 'image/jpg', 'image/jpeg','application/pdf'];
-
-                // Verificando se todos os arquivos são válidos
-                foreach ($retornoExtensao as $extensao) {
-                    if (!in_array($extensao, $formatosValidos)) {
-                        // Se algum arquivo não for válido
-                        $refArquiovos = 'Por favor Enviar fotos no formato PNG ou Jpg';
-                        return $refArquiovos;
-                    }
-                }
-
-                // Se todos os arquivos forem válidos
-                $refArquiovos = 'Continuar';
-                return $refArquiovos;
             }
 
 
 
-    }
+            foreach ($dadosAntes as $dadosA) {
+                // Salvando um arquivo dentro da pasta "Antes"
+                Storage::put("$diretorioPrincipal/Antes/", $dadosA);
+            }
+            foreach ($dadosDurante as $dadosD) {
+                // Salvando um arquivo dentro da pasta "Durante"
+                Storage::put("$diretorioPrincipal/Durante/", $dadosD);
+            }
 
-    public function salvaArquivos($dados,$id){
-        //passo o id para verificar se existe se existir adiciono caso náo crio
-        if(is_dir("public/image/$id")){
-           // dd($dados);
-
-
-        }else{
-           // dd(pathinfo($dados->getOriginalFileName(), PATHINFO_FILENAME));
-
-
-              $dadosAntes = $dados['fotoAnts'];
-              $dadosDurante =  $dados['fotoDurante'];
-              $dadosDepois =  $dados['fotosfotoDepois'];
-
-              $pastas = ['Antes', 'Durante', 'Depois'];
-
-             // Criando a pasta principal do ID, se não existir
-             $diretorioPrincipal = "public/image/$id";
-
-             //dd($diretorioPrincipal);
-
-             if (!Storage::exists($diretorioPrincipal)) {
-                 Storage::makeDirectory($diretorioPrincipal); // Cria a pasta principal
-             }
-
-             // Criando as subpastas dentro da pasta do ID
-             foreach ($pastas as $pasta) {
-                 $caminho = "$diretorioPrincipal/$pasta";
-                 if (!Storage::exists($caminho)) {
-                     Storage::makeDirectory($caminho); // Cria a subpasta
-                 }
-             }
-
-
-
-            // foreach($dadosAntes as $dadosA){
-            //     dd($dadosA);
-             // Salvando um arquivo dentro da pasta "Antes"
-             Storage::put("$diretorioPrincipal/Antes/", $dadosAntes);
-        //   /
-        // }
-           // foreach($dadosDurante as $dadosD){
-
-             // Salvando um arquivo dentro da pasta "Durante"
-             Storage::put("$diretorioPrincipal/Durante/", $dadosDurante);
-            //}
-
-            // foreach ($dadosDepois as  $dadosDe) {
+            foreach ($dadosDepois as  $dadosDe) {
 
                 // Salvando um arquivo dentro da pasta "Depois"
-             Storage::put("$diretorioPrincipal/Depois/", $dadosDurante);
-            //dd($dados);
-       // }
+                Storage::put("$diretorioPrincipal/Depois/", $dadosDe);
+                //dd($dados);
+            }
+
+            //procuro para não inserir novamente nesta tela
+            $verificaFotos = completo_os::where(['idUnicoClusterComple' => $id])->get();
+
+             if($verificaFotos->count() > 0){
+             //como naó vou listar mas este botão vou deixar assim pois inseri normanete, caso tenha alguma bug no envio ele trava o processo
+             return back()->withInput()->with('msg', 'Dados já Inseridos');
+             }else{
+                DB::beginTransaction();
+
+                try{
+                        $dadosFotos = [
+                         'fotoAntes' => 1,
+                         'fotoDurante' => 1,
+                         'fotoDepois' => 1,
+                         'idUnicoClusterComple' => $id,
+                        ];
+                        //  completo_os
+                      //  dd($dadosFotos);
+                        DB::table('completo_os')->insert($dadosFotos);// Dados para a inserção no completo
+                        DB::commit();
+                        return back()->withInput()->with('msg', 'Sucesso ao inserir Usuário');
+                }catch(\Exception $e) {
+                    return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
+                    DB::rollBack();
+                }
+             }
 
 
 
-
-
-          }
+        }
     }
- }
 
+    public function DadosOsOm(Request $retornoOm){
+
+
+         // PRECISO VALIDAR OS CAMPOS
+
+        dd($retornoOm);
+         $upd = completo_os::where('idUnicoClusterComple', $retornoOm->idUnico)->update(['omClaro' => $retornoOm->omClaro, 'osClaro' => $retornoOm->osClaro,'updated_at' => now()]);
+
+          if($upd > 0){
+            return back()->withInput()->with('msg', 'Sucesso ao Inserir Om e Os');
+          }else{
+            return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
+          }
+      //   dd($upd);
+
+
+
+
+    }
+}

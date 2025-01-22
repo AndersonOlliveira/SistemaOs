@@ -73,6 +73,12 @@
 <hr>
 
 <p>aqui vou exibir a listagem? </p>
+
+@if (session('msg'))
+            <p class="class-msg">
+                {{ session('msg') }}
+              </p>
+            @endif
 <!--
    <form method="post" action="{{route('ProcessArquivo')}}" enctype="multipart/form-data">
     @csrf
@@ -134,6 +140,56 @@
     </div>
   </div>
 </div>
+<!-- Modal OM OS CLARO -->
+<div class="modal fade bd-example-modal-lg" id="modalOMOS" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Inserir OM OS</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formAdicionar" method="post" action="{{route('adicionaOM')}}" enctype="multipart/form-data">
+                    @csrf
+                    <!-- Campos do Formulário -->
+
+              <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Informe OM CLARO</label>
+                                <input type="text" name="omClaro" id="omClaro" class="form-control" placeholder="Digite Om Claro">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Informe OS CLARO</label>
+                                <input type="text" name="osClaro" id="osClaro" class="form-control" placeholder="Digite Os Claro">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Observação</label>
+                                <textarea type="textarea" name="observacoes" id="observacoes" class="form-control"> </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="idUnico" id="idUnico">
+                    <input type="hidden" name="idCluster" id="idos">
+                    <input type="hidden" name="idUser" id="idos" value="{{auth()->user()->id}}">
+
+                    <!-- <input type="text" name="campoNome" id="campoNome" class="form-control" placeholder="Nome da OS">
+
+                        <input type="hidden" name="id" id="idos" class="form-control" placeholder="Nome da OS">
+                        <input type="text" name="campoEquipe" id="campoEquipe" class="form-control" placeholder="Equipe">
+                        <input type="file" name="campoFoto" id="campoFoto" class="form-control" /> -->
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <input type="submit" class="btn btn-primary" value="salvar" />
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Modal complemento -->
 <div class="modal fade bd-example-modal-lg" id="modalAdicionar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -147,16 +203,17 @@
                 <form id="formAdicionar" method="post" action="{{route('adicionaDos')}}" enctype="multipart/form-data">
                     @csrf
                     <!-- Campos do Formulário -->
-                    <div class="container">
+
+              <div class="container">
                         <div class="row">
-                            <div class="col-md-3">
+                            <!-- <div class="col-md-3">
                                 <label>Informe OM CLARO</label>
                                 <input type="text" name="omClaro" id="omClaro" class="form-control" placeholder="Digite Om Claro">
                             </div>
                             <div class="col-md-3">
                                 <label>Informe OS CLARO</label>
                                 <input type="text" name="osClaro" id="osClaro" class="form-control" placeholder="Digite Os Claro">
-                            </div>
+                            </div> -->
                             <div class="col-md-6">
                                 <label>Foto Antes</label>
                                 <input type="file" name="fotoAntes[]" id="fotoAntes" class="form-control" multiple="" />
@@ -171,10 +228,10 @@
                                 <label>Foto Depois</label>
                                 <input type="file" name="fotoDepois[]" id="fotoDepois" class="form-control" multiple="" />
                             </div>
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <label>Foto Depois</label>
                                 <textarea type="textarea" name="observacoes" id="observacoes" class="form-control"> </textarea>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <input type="hidden" name="idUnico" id="idUnico">

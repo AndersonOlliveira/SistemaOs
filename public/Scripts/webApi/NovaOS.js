@@ -210,11 +210,19 @@ function CarregaOs() {
                 { // Coluna para os botões
                     data: null,
                     render: function (data, type, row) {
+
+                         if(row.fotoAntes == null){
                         return '<button class="btn btn-warning btnEditar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '"  data-target=".bd-example-modal-lg">Complentar Os</button>';
+
+                        }else if(row.omClaro == null){
+                             return '<button class="btn btn-info btnCompletar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '"  data-target=".bd-example-modal-lg">Inserir Om ,Os Claro </button>';
+
+                        }else{
+                            return "<form action="'{{route('adicionaOM')}}'" method='post' <input type='hidden' value='@csrf'> <input type='submit' class='btn btn-info' name='id' value='2'/></form>";
+
+                        }
                     }
-
-
-                },
+                 },
                 { // Coluna para os botões
                     data: null,
                     render: function (data, type, row) {
@@ -282,6 +290,21 @@ function CarregaOs() {
              ListarDadosRota(rowId,rowIdUnico);
         });
 
+        $('#listaOs tbody').on('click', '.btnCompletar', function () {
+            var rowId = $(this).data('id');
+            var rowIdUnico = $(this).data('unico');
+            //console.log(rowIdUnico);
+            var nomeCluster = $(this).data('nome');
+            // Aqui você pode preencher o formulário do modal com os dados da linha
+            $('#campoNome').val(nomeCluster);
+            $('#idCluster').val(rowId);
+            $('#idUnico').val(rowIdUnico);
+            //preenchêr campos
+
+            // chama o modal
+            $('#modalOMOS').modal('show');
+            // $('#modalServicos').modal('show');
+        });
         // Evento para salvar os dados no formulário
         /* $('#btnSalvar').click(function() {
              var nome = $('#campoNome').val();

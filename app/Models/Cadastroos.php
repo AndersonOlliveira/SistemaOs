@@ -16,6 +16,7 @@ class Cadastroos extends Model
           return DB::table('cadastro_os as os')
               ->leftJoin('classesos as class', 'class.id', '=', 'os.classes')
               ->leftJoin('clusters as clus', 'clus.id', '=', 'os.cluster')
+              ->leftJoin('completo_os as cpl', 'cpl.idUnicoClusterComple', '=', 'os.idUnicoCluster')
               ->select(
                   'os.id',
                   'os.Equipe',
@@ -28,6 +29,8 @@ class Cadastroos extends Model
                   'os.solClaro',
                   'os.solClaro',
                   'os.idUnicoCluster',
+                  'cpl.fotoAntes',
+                  'cpl.omClaro',
                   DB::raw("CONCAT(Prefixo, '-', NumPrefixo) as Prefixo")
               )
               ->get();

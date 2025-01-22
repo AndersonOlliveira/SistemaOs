@@ -17,8 +17,6 @@ class ListaosController extends Controller
 
         $os = Cadastroos::obterDadosComPrefixo();
 
-        //dd($os);
-
         return response()->json([
            'Status' => 2,
            'data' => $os,

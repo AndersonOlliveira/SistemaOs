@@ -37,6 +37,8 @@ Route::post('/files', [FilesController::class, 'ProcessArquivo'])->name('Process
 
 Route::post('/novosDadosOs', [NovaOsController::class, 'novosDadosOs'])->name('adicionaDos');
 
+Route::post('/DadosOsOm', [NovaOsController::class, 'DadosOsOm'])->name('adicionaOM');
+
 Route::post('/adicionaServico', [NovaOsController::class, 'adicionaServico'])->name('adicionaServico');
 
 
