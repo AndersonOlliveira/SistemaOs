@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\Static_;
 
 class Cadastroos extends Model
 {
@@ -34,5 +35,17 @@ class Cadastroos extends Model
                   DB::raw("CONCAT(Prefixo, '-', NumPrefixo) as Prefixo")
               )
               ->get();
+      }
+
+      public static function obterDadosExecell($idUnico){
+
+        return DB::table('cadastro_os as cad')
+        ->leftJoin('produtos_uso as pd', 'pd.idUnicoCluster', '=' ,'cad.idUnicoCluster')
+        ->leftJoin('descritivo_produtos as dp','dp.id', '=' ,'pd.idProdutoDesc')
+        ->leftJoin('completo_os as cp' ,'cp.idUnicoClusterComple',  '=', 'cad.idUnicoCluster')
+        ->select('*'
+        )->where('pd.idUnicoCluster', '=', $idUnico)  // Condição para 'idUnicoCluster'
+        ->get();
+
       }
 }

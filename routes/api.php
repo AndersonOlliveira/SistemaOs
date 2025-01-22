@@ -19,4 +19,6 @@ Route::get('/ListaDadosClusters', [ListaosController::class, 'listaDadosCluster'
 
 Route::get('/Listateste/{cluster}/{idUnico}', [ListaosController::class, 'teste'])->name('listateste');
 
+Route::get('/excel/{idUnico}', [ListaosController::class, 'excel'])->name('gerarExcel');
+
 

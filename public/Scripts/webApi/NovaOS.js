@@ -218,7 +218,7 @@ function CarregaOs() {
                              return '<button class="btn btn-info btnCompletar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '"  data-target=".bd-example-modal-lg">Inserir Om ,Os Claro </button>';
 
                         }else{
-                            return "<form action="'{{route('adicionaOM')}}'" method='post' <input type='hidden' value='@csrf'> <input type='submit' class='btn btn-info' name='id' value='2'/></form>";
+                            return '<button class="btn btn-info" onclick="enviarFormulario(' + row.idUnicoCluster + ')">Solicitar Execell</button>';
 
                         }
                     }
@@ -305,6 +305,8 @@ function CarregaOs() {
             $('#modalOMOS').modal('show');
             // $('#modalServicos').modal('show');
         });
+
+
         // Evento para salvar os dados no formulário
         /* $('#btnSalvar').click(function() {
              var nome = $('#campoNome').val();
@@ -343,6 +345,41 @@ function CarregaOs() {
              });
          });*/
     });
+
+
+}
+function enviarFormulario(id){
+    $.ajax({
+        url: "api/excel/" + id, // A URL com o parâmetro
+        method: "GET",                           // Método HTTP
+       /// dataType: "json",
+        xhrFields: {
+        responseType: 'blob'  // Diz que a resposta será um arquivo (como Excel)
+    },                       // Espera uma resposta no formato JSON
+        success: function(response) {
+
+            console.log(response);
+          if(response.status == 1) {
+            alert('Dados Não localizados Por favor preencha envie os dados' );
+
+
+            }else{
+                var a = document.createElement('a');
+                var url = window.URL.createObjectURL(response);
+                a.href = url;
+                a.download = 'LISTA DE MATERIAIS DA MANUTENÇÃO.xlsx';  // Nome do arquivo que será baixado
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);  // Libera o objeto URL
+          }
+        },
+
+        error: function(xhr, status, error) {
+            alert.error("Erro na requisição:", error);
+        }
+
+    });
+
 
 
 }
