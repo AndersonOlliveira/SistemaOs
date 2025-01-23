@@ -7,27 +7,28 @@ use App\Models\produtos_usos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\verificarExtensoes;
+use App\Http\Requests\Osresquest;
 use App\Models\completo_os;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\ValidaCamposController;
+
 
 
 class NovaOsController extends Controller
 {
     public function novaOs(Request $dadosOs)
     {
-        //preciso colocar a Osrequest
 
-        // $dadosBanco = Cadastroos::where(['cluster' => $dadosOs]);
-        //dd($dadosBanco->count());
-
-        //náo localizado passo para inserir
-        //if($dadosBanco->count() > 0){
-        // dd('prossigo para inserir dados dentro do banco');
         //dd($dadosOs);
+        $controllerValidade = new  ValidaCamposController();
+        //chamando outra contoller pra validar
+        $r = $controllerValidade->validaOs($dadosOs);
+        if ($r) {
 
-        //}else{
-        //dd('prossigo para inserir dados dentro do banco');
-        // dd($dadosOs);
+            return $r;
+        }
 
         //preparar para inserir
         $numeroRan = date('d') + date('m') + date('y') + date('h') + date('i') + date('s');
@@ -66,35 +67,41 @@ class NovaOsController extends Controller
     public function novosDadosOs(Request $retornoNovo)
     {
 
-
         $fotoAntes = $retornoNovo->file('fotoAntes');
         $fotoDurante = $retornoNovo->file('fotoDurante');
         $fotosDepois = $retornoNovo->file('fotoDepois');
 
-        // dd($retornoNovo->file());
-
-
-
         $array = ['fotoAnts' => $fotoAntes, 'fotoDurante' => $fotoDurante, 'fotoDepois' => $fotosDepois];
+        $controllerValidadeFotos = new  ValidaCamposController();
+        //chamando outra contoller pra validar
+        $r = $controllerValidadeFotos->validaCamposFotos($array);
+
+         if($r){
+
+            return $r;
+        }
+
 
         $validaFotos = $this->verificarExtensoes($array);
         if ($validaFotos) {
             return $validaFotos;
         } else {
             //aqui vou salvar os arquivos
-            $salvaFotos = $this->salvaArquivos($array, $retornoNovo->idUnico);
+            $salvaFotos = $this->salvaArquivos($array, $retornoNovo->idUnioEditar);
             return $salvaFotos;
-           // dd('çai aqui');
+            // dd('çai aqui');
         }
- }
+    }
 
     public function adicionaServico(Request $retorno)
     {
 
-        //dd($retorno);
-        //adicionar uma coluna na tabela de cluster, onde vai ter um id randomico sera usado para inserir da tabela de cluster, e na tabela de produtos assim realiza a busca na tabela com o id randomico
-
-        // aqui vou procurar o banco
+         $controllerValidadeServicos = new  ValidaCamposController();
+        //chamando outra contoller pra validar
+         $r = $controllerValidadeServicos->validaCamposServico($retorno);
+         if($r){
+            return $r;
+        }
         $produtos = [];
         $produtoCount = 0;
         while ($retorno->has("nomeProduto" . ($produtoCount + 2))) {
@@ -218,6 +225,15 @@ class NovaOsController extends Controller
     }
     public function salvaArquivos($dados, $id)
     {
+
+        $controllerIdunico = new  ValidaCamposController();
+        //chamando outra contoller pra validar
+        $r = $controllerIdunico->validaIdUnico($id);
+        if ($r) {
+
+            return $r;
+        }
+
         //passo o id para verificar se existe se existir adiciono caso náo crio
         if (is_dir("public/image/$id")) {
             //dd($dados);
@@ -270,52 +286,68 @@ class NovaOsController extends Controller
             //procuro para não inserir novamente nesta tela
             $verificaFotos = completo_os::where(['idUnicoClusterComple' => $id])->get();
 
-             if($verificaFotos->count() > 0){
-             //como naó vou listar mas este botão vou deixar assim pois inseri normanete, caso tenha alguma bug no envio ele trava o processo
-             return back()->withInput()->with('msg', 'Dados já Inseridos');
-             }else{
+            if ($verificaFotos->count() > 0) {
+                //como naó vou listar mas este botão vou deixar assim pois inseri normanete, caso tenha alguma bug no envio ele trava o processo
+                return back()->withInput()->with('msg', 'Dados já Inseridos');
+            } else {
                 DB::beginTransaction();
 
-                try{
-                        $dadosFotos = [
-                         'fotoAntes' => 1,
-                         'fotoDurante' => 1,
-                         'fotoDepois' => 1,
-                         'idUnicoClusterComple' => $id,
-                        ];
-                        //  completo_os
-                      //  dd($dadosFotos);
-                        DB::table('completo_os')->insert($dadosFotos);// Dados para a inserção no completo
-                        DB::commit();
-                        return back()->withInput()->with('msg', 'Sucesso ao inserir Usuário');
-                }catch(\Exception $e) {
+                try {
+                    $dadosFotos = [
+                        'fotoAntes' => 1,
+                        'fotoDurante' => 1,
+                        'fotoDepois' => 1,
+                        'idUnicoClusterComple' => $id,
+                    ];
+                    //  completo_os
+                    //  dd($dadosFotos);
+                    DB::table('completo_os')->insert($dadosFotos); // Dados para a inserção no completo
+                    DB::commit();
+                    return back()->withInput()->with('msg', 'Sucesso ao inserir Usuário');
+                } catch (\Exception $e) {
                     return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
                     DB::rollBack();
                 }
-             }
-
-
-
+            }
         }
     }
 
-    public function DadosOsOm(Request $retornoOm){
+    public function DadosOsOm(Request $retornoOm)
+    {
+        $controllerIdunicoOM = new  ValidaCamposController();
+        //chamando outra contoller pra validar
+        $r = $controllerIdunicoOM->validaOm($retornoOm);
+        if ($r) {
+
+            return $r;
+        }
 
 
-         // PRECISO VALIDAR OS CAMPOS
+        // PRECISO VALIDAR OS CAMPOS
+        $upd = completo_os::where('idUnicoClusterComple', $retornoOm->idUnico)->update(['omClaro' => $retornoOm->omClaro, 'osClaro' => $retornoOm->osClaro, 'updated_at' => now()]);
 
-        dd($retornoOm);
-         $upd = completo_os::where('idUnicoClusterComple', $retornoOm->idUnico)->update(['omClaro' => $retornoOm->omClaro, 'osClaro' => $retornoOm->osClaro,'updated_at' => now()]);
-
-          if($upd > 0){
+        if ($upd > 0) {
             return back()->withInput()->with('msg', 'Sucesso ao Inserir Om e Os');
-          }else{
+        } else {
             return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
-          }
-      //   dd($upd);
+        }
+        //   dd($upd);
+  }
+    public function listarFotos(Request $idFotos){
 
+        //dd($idFotos->idUnico);
 
+        $da = public_path('storage/image/'. $idFotos->idUnico);
 
+          if (Storage::exists($da)) {
 
-    }
+             dd("t");
+        }
+        //dd($da);
+
+        if(is_dir($da)){
+            dd("e um diretorio");
+        }
+
+}
 }

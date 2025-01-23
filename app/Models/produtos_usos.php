@@ -20,7 +20,8 @@ class produtos_usos extends Model
         'DP.item',
         'DP.descricao',
         'DP.valor',
-        'pd.QuantidadeProd'
+        'pd.QuantidadeProd',
+        'pd.idUnicoCluster'
     )
     ->where('pd.idCidade', '=', $idCidade)  // Condição para 'idCidade'
     ->where('pd.idUnicoCluster', '=', $idUnico)  // Condição para 'idUnicoCluster'

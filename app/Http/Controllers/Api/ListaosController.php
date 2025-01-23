@@ -13,11 +13,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
-    use PhpOffice\PhpSpreadsheet\Spreadsheet;
-	use PhpOffice\PhpSpreadsheet\Writer\Xls;
-	//use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-	use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+//use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use ZipArchive;
 
 class ListaosController extends Controller
@@ -78,23 +77,8 @@ class ListaosController extends Controller
         'dados' => 'Falha ao consultar Verificque',
         // Outros dados que você deseja enviar
     ]);
-
-     }
-
-
-
-    //  public function adicionarOs(Request $request, Response $response):JsonResponse{
-
-    //     return response()->json([
-    //         'Status' => 2,
-    //         'data' => $request,
-    //         'mensage' => 'Sucesso ao consultar'
-    //      ],400);
-
-
-    //  }
-
-    public function excel($idUnico) { //:JsonResponse{
+   }
+   public function excel($idUnico) { //:JsonResponse{
 
 
         $i_node = 16; //INDICA APARTIR DE QUAL LINHA DEVEMOS COMEÇAR ESCREVER NA PLANILHA
@@ -106,21 +90,12 @@ class ListaosController extends Controller
         $user = Cadastroos::obterDadosExecell($idUnico);  // Supondo que você tenha dados para preencher
 
         foreach ($user as $index => $u) {
-       // dd($u);
         $sheet->setCellValue('B7', $u->data);
-        //$sheet->setCellValue('B1', 'Nome');
-        //$sheet->setCellValue('C1', 'Email');
 
         $multiplicar = $u->valor * $u->QuantidadeProd;
         $valorUnitario = 'R$ ' . number_format($u->valor, 2, ',', '.');
         $valorFormatado = 'R$ ' . number_format($multiplicar, 2, ',', '.');
 
-
-       //
-
-        //$valorFormatado = $fmt->format($multiplicar);
-
-        //s dd($valorFormatado);
         // Preencher os dados na planilha a partir da linha $i_node
 
             $sheet->setCellValue('A' . ($i_node + $index), $u->item);        // Exemplo: CÓDIGO
@@ -152,23 +127,6 @@ class ListaosController extends Controller
                 'Cache-Control' => 'max-age=0',
             ]
         );
-    //     $nome = tempnam(sys_get_temp_dir(), 'csv_' . Str::ulid());
-
-    //     $escrever = fopen($nome, 'w');
-
-    //     $teste = ['a','v', 'ç', 'd'];
-
-    //     fputcsv($escrever, $teste, ';');
-
-    //     fclose($escrever);
-
-    //     $dados = response()->download($nome, 'relatorio' . Str::ulid() . '.csv');
-
-    //    return response()->json([
-    //         'Status' => 2,
-    //         'data' => $dados,
-    //         'mensage' => 'Sucesso ao consultar'
-    //      ],200);
     }
 
 }

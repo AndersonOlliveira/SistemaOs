@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CidadeController;
 use App\Http\Controllers\Api\classesController;
 use App\Http\Controllers\api\CluesterApicontroller;
 use App\Http\Controllers\Api\ListaosController;
+use App\Http\Controllers\Api\PhotoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,5 @@ Route::get('/Listateste/{cluster}/{idUnico}', [ListaosController::class, 'teste'
 
 Route::get('/excel/{idUnico}', [ListaosController::class, 'excel'])->name('gerarExcel');
 
+Route::get('/SolitaFoto/{id}', [PhotoController::class, 'getPhotos']);
 

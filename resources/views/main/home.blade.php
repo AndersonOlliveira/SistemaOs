@@ -4,6 +4,18 @@
 
 @section('content')
 
+@if($errors->any())
+
+<!-- {{dd($errors)}} -->
+<div class="alert alert-danger">
+    <ul>
+        @foreach($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 <p>
     <a class="btn btn-primary" data-toggle="collapse" href="#NovaOs" role="button" aria-expanded="false" aria-controls="collapseExample">
         Nova Os
@@ -16,7 +28,7 @@
             <div class="row align-items-start">
                 <div class="form-group col-md-4">
                     <label for="inputEmail4">Equipe</label>
-                    <input type="text" name="nameEquipe" class="form-control" id="inputEmail4" placeholder="Digite a Equipe">
+                    <input type="text" name="nameEquipe" value="{{old('nameEquipe')}}" class="form-control" id="inputEmail4" placeholder="Digite a Equipe">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">Selecione Cluster</label>
@@ -26,11 +38,11 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputAddress">Informe Endereço</label>
-                    <input type="text" name="endereco" class="form-control" id="inputAddress" placeholder="Digite o endereço">
+                    <input type="text" name="endereco" class="form-control" id="inputAddress" value="{{old('endereco')}}" placeholder="Digite o endereço">
                 </div>
                 <div class="form-group col-md-4 ">
                     <label for="inputAddress">Informe Data</label>
-                    <input type="date" name="data" class="form-control" id="inputAddress">
+                    <input type="date" name="data" value="{{old('data')}}" class="form-control" id="inputAddress">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">Selecione Classe</label>
@@ -41,24 +53,24 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="inputCity">Solicitante Claro</label>
-                        <input type="text" name="solClaro" class="form-control" id="inputCity">
+                        <input type="text" name="solClaro" value="{{old('solClaro')}}" class="form-control" id="inputCity">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="inputState">Hora Inicio Atividade</label>
-                        <input type="time" name="hoInicio" class="form-control">
+                        <input type="time" name="hoInicio" value="{{old('hoInicio')}}" class="form-control">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="inputState">Hora Fim Atividade</label>
-                        <input type="time" name="horFim" class="form-control">
+                        <input type="time" name="horFim" value="{{old('horFim')}}" class="form-control">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="inputAddress2">Evento Gerador</label>
                         <label for="inputState">Prefixo</label>
-                        <input type="type" name="Prefixo" class="form-control">
+                        <input type="type" name="Prefixo" value="{{old('Prefixo')}}" class="form-control">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="inputState"> Numero Prefixo</label>
-                        <input type="type" name="NumPrefixo" class="form-control">
+                        <input type="type" name="NumPrefixo" value="{{old('NumPrefixo')}}" class="form-control">
                     </div>
                 </div>
             </div>
@@ -75,10 +87,10 @@
 <p>aqui vou exibir a listagem? </p>
 
 @if (session('msg'))
-            <p class="class-msg">
-                {{ session('msg') }}
-              </p>
-            @endif
+<p class="class-msg">
+    {{ session('msg') }}
+</p>
+@endif
 <!--
    <form method="post" action="{{route('ProcessArquivo')}}" enctype="multipart/form-data">
     @csrf
@@ -99,7 +111,6 @@
             <th>Solicitante Claro</th>
             <th>Tipo Os</th>
             <th>Opções</th>
-
         </tr>
     </thead>
     <tbody>
@@ -111,34 +122,60 @@
 
 <!-- LISTAR DADOS MODAL EM FORMATO TABELA -->
 <div class="modal fade bd-example-modal-lg" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" id="ajuste modal" style="max-width: 100%; width: auto; display: table;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Lista Produtos utilizados</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-      <table id="ListaDados" class="table table-striped table-bordered"  ellspacing="0"  style="width:100%">
-    <thead>
-        <tr>
-            <td>id</td>
-            <td>Descrição</td>
-            <td>Valor Unitário</td>
-            <td>Quantidade</td>
-            <td>Total</td>
-       </tr>
-    </thead>
-    <tbody>
 
-</tbody>
-</table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <!-- <button type="button" class="btn btn-primary">U</button> -->
-      </div>
+
+
+<div class="modal-dialog modal-lg" id="ajuste modal" style="max-width: 100%; width: auto; display: table;">
+
+<div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Lista Produtos utilizados</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+    <a class="nav-link active" id="ListaDados-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Dados Produtos</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Fotos</a>
+  </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+  <div class="modal-body">
+                <table id="ListaDados" class="table table-striped table-bordered" ellspacing="0" style="width:100%">
+                    <thead>
+                        <tr>
+                            <td>id</td>
+                            <td>Descrição</td>
+                            <td>Valor Unitário</td>
+                            <td>Quantidade</td>
+                            <td>Total</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+              </div>
+              </div>
+              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Outra pagina
+                  <form method="post" action="{{route('listarFotos')}}">
+                   @csrf
+                   <input type="hidden" name="idUnico" id="idUnico">
+                   <input type="submit" class="btn btn-primary" value="listar"/>
+                 </form>
+             </div>
+             </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <!-- <button type="button" class="btn btn-primary">U</button> -->
+            </div>
+        </div>
     </div>
-  </div>
+
 </div>
 <!-- Modal OM OS CLARO -->
 <div class="modal fade bd-example-modal-lg" id="modalOMOS" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -153,7 +190,7 @@
                     @csrf
                     <!-- Campos do Formulário -->
 
-              <div class="container">
+                    <div class="container">
                         <div class="row">
                             <div class="col-md-3">
                                 <label>Informe OM CLARO</label>
@@ -170,8 +207,8 @@
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" name="idUnico" id="idUnico">
-                    <input type="hidden" name="idCluster" id="idos">
+                    <input type="hidden" name="idUnico" id="idUnicoOm">
+                    <input type="hidden" name="idCluster" id="idCluster">
                     <input type="hidden" name="idUser" id="idos" value="{{auth()->user()->id}}">
 
                     <!-- <input type="text" name="campoNome" id="campoNome" class="form-control" placeholder="Nome da OS">
@@ -204,7 +241,7 @@
                     @csrf
                     <!-- Campos do Formulário -->
 
-              <div class="container">
+                    <div class="container">
                         <div class="row">
                             <!-- <div class="col-md-3">
                                 <label>Informe OM CLARO</label>
@@ -234,7 +271,7 @@
                             </div> -->
                         </div>
                     </div>
-                    <input type="hidden" name="idUnico" id="idUnico">
+                    <input type="hidden" name="idUnioEditar" id="idUnioEditar">
                     <input type="hidden" name="idCluster" id="idos">
                     <input type="hidden" name="idUser" id="idos" value="{{auth()->user()->id}}">
 
@@ -267,24 +304,22 @@
                     @csrf
                     <!-- Campos do Formulário -->
                     <div class="container">
-                      <div class="d-flex">
+                        <div class="d-flex">
                             <div class="col-md-5">
                                 <div class="container-fluid">
                                     <div class="p-2">
-                                        <label>Tem uso de material? </label>
-                                        <!-- <input type="checkbox" value="All" id="material"/> -->
                                         <section id="conteudo">
                                             <select class="form-select form-control-sm" id="produto" aria-label="Default select example">
                                                 <option>Selecione Serviços</option>
                                                 <input type="hidden" id="idDescricao">
                                                 <div class="row">
-                                                <a href="#" id="Adicionar">Adicionar</a>
-                                                <input type="hidden" name="idCluster" id="idCluster">
-                                                <input type="hidden" name="idUser" id="idos" value="{{auth()->user()->id}}">
-                                                <input type="hidden" name="idUnico" id="idUnicos">
+                                                    <a href="#" id="Adicionar">Adicionar</a>
+                                                    <input type="hidden" name="idCluster" id="idClusterServicos">
+                                                    <input type="hidden" name="idUser" id="idos" value="{{auth()->user()->id}}">
+                                                    <input type="hidden" name="idUnico" id="idUnicos">
                                                 </div>
                                             </select>
-                                          </div>
+                                    </div>
                                     </section>
 
                                 </div>
@@ -299,7 +334,7 @@
                                     </div>
                                 </div> -->
 
-<!-- #1241744223  protocolo samsung  3 dias -->
+                                <!-- #1241744223  protocolo samsung  3 dias -->
 
                             </div>
                         </div>
@@ -322,9 +357,9 @@
 
     <!-- Modal servicos -->
 
-        <script src="{{ asset('Scripts/webApi/NovaOs.js')}}"></script>
-        <script src="{{ asset('js/ajax.js')}}"></script>
+    <script src="{{ asset('Scripts/webApi/NovaOs.js')}}"></script>
+    <script src="{{ asset('js/ajax.js')}}"></script>
 
 
 
-        @endsection
+    @endsection

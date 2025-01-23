@@ -60,6 +60,7 @@ function CarregaClusters() {
 
 }
 function ListarDadosRota(rowId,rowIdUnico){
+    montarFotos(rowIdUnico);
    $.ajax({
     url: "api/Listateste/" + rowId + '/' + rowIdUnico, // A URL com o parâmetro
     method: "GET",                           // Método HTTP
@@ -71,6 +72,9 @@ function ListarDadosRota(rowId,rowIdUnico){
 
         }else{
           var dados = response.dados
+         // console.log(dados);
+          //chamo outra funcao para listar as fotos
+
             montarTabela(dados);
            // Exibe a resposta no console
 
@@ -83,6 +87,32 @@ function ListarDadosRota(rowId,rowIdUnico){
 
 });
 
+function montarFotos(id){
+    // $.ajax({
+    //     url: "api/SolitaFoto/" + id, // A URL com o parâmetro
+    //     method: "GET",                           // Método HTTP
+    //     dataType: "json",                        // Espera uma resposta no formato JSON
+    //     success: function(response) {
+    //       if(response.status == 1) {
+
+    //        alert('Dados Não localizados Por favor preencha envie os dados' );
+
+    //         }else{
+    //           var dados = response.dados
+    //           console.log(dados);
+
+    //       }
+    //     },
+
+    //     error: function(xhr, status, error) {
+    //         alert.error("Erro na requisição:", error);
+    //     }
+
+    // });
+
+}
+
+
 function montarTabela(dados){
      tabelaData = [];
 
@@ -92,6 +122,7 @@ function montarTabela(dados){
         // Append tem a função de inserir
          // Adicionando os dados no array para preencher a tabela
          var items = val.item;
+
          var descricoes = val.descricao;
        //  var itemComDescription = items.concat('-' + descricoes);
          var itemComDescription = (items ? items: 'Valor não disponível') + '-' + (descricoes ? descricoes: 'Descrição não disponível');
@@ -107,6 +138,10 @@ function montarTabela(dados){
             quantidade: val.QuantidadeProd,
             total: valorFormatado
         });
+      // Aqui você pode preencher o formulário do modal com os dados da linha
+
+        $('#idUnico').val(val.idUnicoCluster);
+
     });
   // Inicializando o DataTable
     $('#ListaDados').DataTable({
@@ -206,7 +241,7 @@ function CarregaOs() {
                 { data: 'hoInicio' },
                 { data: 'horFim' },
                 { data: 'solClaro' },
-                { data: 'Prefixo' },
+                { data: 'tipoOs' }, //trocado para exibir o correto
                 { // Coluna para os botões
                     data: null,
                     render: function (data, type, row) {
@@ -218,7 +253,7 @@ function CarregaOs() {
                              return '<button class="btn btn-info btnCompletar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '"  data-target=".bd-example-modal-lg">Inserir Om ,Os Claro </button>';
 
                         }else{
-                            return '<button class="btn btn-info" onclick="enviarFormulario(' + row.idUnicoCluster + ')">Solicitar Execell</button>';
+                            return '<button class="btn btn-success" onclick="enviarFormulario(' + row.idUnicoCluster + ')">Solicitar Execell</button>';
 
                         }
                     }
@@ -252,7 +287,7 @@ function CarregaOs() {
             // Aqui você pode preencher o formulário do modal com os dados da linha
             $('#campoNome').val(nomeCluster);
             $('#idCluster').val(rowId);
-            $('#idUnico').val(rowIdUnico);
+            $('#idUnioEditar').val(rowIdUnico);
             //preenchêr campos
 
             // chama o modal
@@ -265,7 +300,7 @@ function CarregaOs() {
             var nomeCluster = $(this).data('nome');
             // Aqui você pode preencher o formulário do modal com os dados da linha
             $('#campoNome').val(nomeCluster);
-            $('#idCluster').val(rowId);
+            $('#idClusterServicos').val(rowId);
             $('#idUnicos').val(rowIdUnico);
             //preenchêr campos
 
@@ -298,7 +333,7 @@ function CarregaOs() {
             // Aqui você pode preencher o formulário do modal com os dados da linha
             $('#campoNome').val(nomeCluster);
             $('#idCluster').val(rowId);
-            $('#idUnico').val(rowIdUnico);
+            $('#idUnicoOm').val(rowIdUnico);
             //preenchêr campos
 
             // chama o modal

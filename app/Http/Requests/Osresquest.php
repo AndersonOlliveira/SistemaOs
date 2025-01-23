@@ -30,4 +30,18 @@ class Osresquest extends FormRequest
             'NumPrefixo' => 'required',
         ];
     }
-}
+        // public function messages(): array
+        // {
+
+        //      return  [
+        //     'endereco' => 'Campo Nome e obrigatorio!',
+        //     'data' => 'Campo data e obrigatorio!',
+        //     'hoInicio' => 'Campo hoInicio e obrigatorio!',
+        //     'hoFim' => 'Campo hoFim e obrigatorio!',
+        //     'Prefixo' => 'Campo Prefixo e obrigatorio!',
+        //     'NumPrefixo' => 'Campo NumPrefixo e obrigatorio!',
+
+        //    ];
+        // }
+    }
+
