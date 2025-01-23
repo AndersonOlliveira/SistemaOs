@@ -20,6 +20,9 @@
     <a class="btn btn-primary" data-toggle="collapse" href="#NovaOs" role="button" aria-expanded="false" aria-controls="collapseExample">
         Nova Os
     </a>
+    <a class="btn btn-info" data-toggle="collapse" href="#osFechadas" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Os Fechadas
+    </a>
 </p>
 <div class="collapse" id="NovaOs">
     <div class="card card-body">
@@ -81,6 +84,32 @@
             </div>
         </form>
     </div>
+</div>
+<div class="collapse" id="osFechadas">
+  <div class="card card-body">
+  <table id="listaOFechada" class="display nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Equipe</th>
+            <th>NomeCluster</th>
+            <th>Prefixo</th>
+            <th>data</th>
+            <th>endereco</th>
+            <th>Hora Inicio</th>
+            <th>Hora Fim</th>
+            <th>Solicitante Claro</th>
+            <th>Tipo Os</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+
+        </tr>
+    </tbody>
+ </table>
+  </div>
 </div>
 <hr>
 

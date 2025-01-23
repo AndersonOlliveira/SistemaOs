@@ -109,5 +109,17 @@ class ValidaCamposController extends Controller
          }
 
     }
+   public function validaId($dados){
+        //d($dados);
+      if (!isset($dados)) {
 
+        return response()->json([
+            'status' => '2',
+            'message' => 'Campo id Unico Não pode ser Vazio',
+            // Outros dados que você deseja enviar
+        ]);
+
+    }
+
+   }
 }

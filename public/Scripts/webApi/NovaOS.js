@@ -31,6 +31,10 @@ $(document).ready(function () {
     CarregaOs();
 });
 $(document).ready(function () {
+    carregarOsfechada();
+});
+
+$(document).ready(function () {
     CarregaProdutos();
 });
 function CarregaClusters() {
@@ -219,7 +223,31 @@ function CarregaClasses() {
     });
 }
 
+function carregarOsfechada(){
+    $(document).ready(function () {
+        $('#listaOFechada').DataTable({
+            scrollX: true,
+            ajax: {
+                url: '/api/ListaOsFechadas',
+                // method:'get', // URL da API
+                dataSrc: 'data',  // Define que a resposta será um array (sem chave para acessar)
+              },
 
+            columns: [
+                { data: 'id' },
+                { data: 'Equipe' },
+                { data: 'NomeCluster' },
+                { data: 'Prefixo' },
+                { data: 'data' },
+                { data: 'endereco' },
+                { data: 'hoInicio' },
+                { data: 'horFim' },
+                { data: 'solClaro' },
+                { data: 'tipoOs' }
+            ]
+    });
+ });
+}
 
 function CarregaOs() {
 
@@ -242,41 +270,78 @@ function CarregaOs() {
                 { data: 'horFim' },
                 { data: 'solClaro' },
                 { data: 'tipoOs' }, //trocado para exibir o correto
-                { // Coluna para os botões
-                    data: null,
-                    render: function (data, type, row) {
+            //     { // Coluna para os botões
+            //         data: null,
+            //         render: function (data, type, row) {
 
-                         if(row.fotoAntes == null){
-                        return '<button class="btn btn-warning btnEditar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '"  data-target=".bd-example-modal-lg">Complentar Os</button>';
+            //              if(row.fotoAntes == null){
+            //             return '<button class="btn btn-warning btnEditar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '"  data-target=".bd-example-modal-lg">Complentar Os</button>';
 
-                        }else if(row.omClaro == null){
-                             return '<button class="btn btn-info btnCompletar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '"  data-target=".bd-example-modal-lg">Inserir Om ,Os Claro </button>';
+            //             }else if(row.omClaro == null){
+            //                  return '<button class="btn btn-info btnCompletar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '"  data-target=".bd-example-modal-lg">Inserir Om ,Os Claro </button>';
 
-                        }else{
-                            return '<button class="btn btn-success" onclick="enviarFormulario(' + row.idUnicoCluster + ')">Solicitar Execell</button>';
+            //             }else{
+            //                 return '<button class="btn btn-success" onclick="enviarFormulario(' + row.idUnicoCluster + ')">Solicitar Execell</button>';
 
-                        }
-                    }
-                 },
-                { // Coluna para os botões
-                    data: null,
-                    render: function (data, type, row) {
-                        return '<button class="btn btn-secondary btnServicos" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '" data-target=".bd-example-modal-lg">Adiconar Serviços </button>';
-                    }
-                }, { // Coluna para os botões
-                    data: null,
-                    render: function (data, type, row) {
-                        return '<button class="btn btn-info btnDados" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '" data-target=".bd-example-modal-lg">Listar Dados</button>';
-                    }
-                },
-                // { // Coluna para os botões
-                //      data: null,
-                //     render: function (data, type, row) {
-                //         return '<input type="hidden" data-idunicocluster="' + row.idUnicoCluster + '"  data-target=".bd-example-modal-lg"/>';
-                //      }
-                //  },
-            ]
-        });
+            //             }
+            //         }
+            //      },
+            //     { // Coluna para os botões
+            //         data: null,
+            //         render: function (data, type, row) {
+            //             return '<button class="btn btn-secondary btnServicos" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '" data-target=".bd-example-modal-lg">Adiconar Serviços </button>';
+            //         }
+            //     },
+            //      { // Coluna para os botões
+            //         data: null,
+            //         render: function (data, type, row) {
+            //             return '<button class="btn btn-info btnDados" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '" data-target=".bd-example-modal-lg">Listar Dados</button>';
+            //         }
+            //     },
+            //     { // Coluna para os botões
+            //         data: null,
+            //         render: function (data, type, row) {
+            //             return '<button class="btn btn-danger btnFechar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '" data-target=".bd-example-modal-lg">Fechar Os</button>';
+            //         }
+            //     },
+            //     // { // Coluna para os botões
+            //     //      data: null,
+            //     //     render: function (data, type, row) {
+            //     //         return '<input type="hidden" data-idunicocluster="' + row.idUnicoCluster + '"  data-target=".bd-example-modal-lg"/>';
+            //     //      }
+            //     //  },
+            // ]
+           { data: null,
+            render: function (data, type, row) {
+            var buttons = '';
+
+            // Verifica a condição para adicionar o botão "Complentar Os"
+            if (row.fotoAntes == null) {
+                buttons += '<button class="btn btn-warning btnEditar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '" data-target=".bd-example-modal-lg">Complentar Os</button> ';
+            }
+            // Verifica a condição para adicionar o botão "Inserir Om, Os Claro"
+            else if (row.omClaro == null) {
+                buttons += '<button class="btn btn-info btnCompletar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '" data-target=".bd-example-modal-lg">Inserir Om ,Os Claro </button> ';
+            }
+            // Se nenhuma das condições anteriores, adiciona o botão "Solicitar Execell"
+            else {
+                buttons += '<button class="btn btn-success" onclick="enviarFormulario(' + row.idUnicoCluster + ')">Solicitar Execell</button> ';
+            }
+
+            // Botão para adicionar serviços
+            buttons += '<button class="btn btn-secondary btnServicos" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '" data-target=".bd-example-modal-lg">Adiconar Serviços </button> ';
+
+            // Botão para listar dados
+            buttons += '<button class="btn btn-info btnDados" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '" data-target=".bd-example-modal-lg">Listar Dados</button> ';
+
+            // Botão para fechar os
+            buttons += '<button class="btn btn-danger btnFechar" onclick="FecharOs(' + row.idUnicoCluster + ', ' + row.id + ')"> Fechar Os</button>';
+
+            return buttons;
+        },
+    }
+    ]
+});
 
         // Evento para abrir o modal ao clicar no botão "Editar"
         $('#listaOs tbody').on('click', '.btnEditar', function () {
@@ -294,6 +359,7 @@ function CarregaOs() {
             $('#modalAdicionar').modal('show');
             // $('#modalServicos').modal('show');
         });
+
         $('#listaOs tbody').on('click', '.btnServicos', function () {
             var rowId = $(this).data('id');
             var rowIdUnico = $(this).data('unico');
@@ -383,6 +449,37 @@ function CarregaOs() {
 
 
 }
+function FecharOs(id,idtabela){
+  //ao clicar fecher esta os sai da lista de os em andamento e vai para as finalizadas
+  if(confirm("Tem certeza que deseja Fechar Os " + idtabela +" ?")){
+
+     $.ajax({
+        url: "api/fecharOs/" + id, // A URL com o parâmetro
+        method: "GET",                           // Método HTTP
+        dataType: "json",
+        success: function(response) {
+            console.log(response);
+           if(response.status == 1) {
+
+              alert(response.message);
+
+
+            }else{
+
+              alert(response.message);
+          }
+        },
+
+        error: function(xhr, status, error) {
+            alert.error("Erro na requisição:", error);
+        }
+
+    });
+ }else{
+    return false;
+ }
+}
+
 function enviarFormulario(id){
     $.ajax({
         url: "api/excel/" + id, // A URL com o parâmetro

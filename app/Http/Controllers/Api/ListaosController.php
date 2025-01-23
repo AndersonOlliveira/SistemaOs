@@ -34,6 +34,18 @@ class ListaosController extends Controller
      }
 
 
+     public function osFechadas() :JsonResponse{
+
+         $fechar = Cadastroos::obterOsfechadas();
+
+         return response()->json([
+            'Status' => 2,
+            'data' => $fechar,
+            'mensage' => 'Sucesso ao consultar'
+         ], 200);
+    }
+
+
       public function listaProdutos() :JsonResponse{
 
         $listaProd = descritivo_produto::all();

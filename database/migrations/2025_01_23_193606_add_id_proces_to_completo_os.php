@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('completo_os', function (Blueprint $table) {
-
-          //  $table->foreign('idUnicoClusterComple')->references('idUnicoCluster')->on('cadastro_os');
-
+        Schema::table('cadastro_os', function (Blueprint $table) {
+              $table->bigInteger("idProcess");
         });
-
     }
 
     /**
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('cadastro_os', function (Blueprint $table) {
+          $table->Drocolum('idProcess');
+        });
     }
 };

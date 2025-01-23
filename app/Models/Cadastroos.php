@@ -33,7 +33,7 @@ class Cadastroos extends Model
                   'cpl.fotoAntes',
                   'cpl.omClaro',
                   DB::raw("CONCAT(Prefixo, '-', NumPrefixo) as Prefixo")
-              )
+              )->where('os.idProcess', '<>', 10)
               ->get();
       }
 
@@ -47,5 +47,30 @@ class Cadastroos extends Model
         )->where('pd.idUnicoCluster', '=', $idUnico)  // Condição para 'idUnicoCluster'
         ->get();
 
+      }
+
+
+       public static function obterOsfechadas(){
+        return DB::table('cadastro_os as os')
+        ->leftJoin('classesos as class', 'class.id', '=', 'os.classes')
+        ->leftJoin('clusters as clus', 'clus.id', '=', 'os.cluster')
+        ->leftJoin('completo_os as cpl', 'cpl.idUnicoClusterComple', '=', 'os.idUnicoCluster')
+        ->select(
+            'os.id',
+            'os.Equipe',
+            'os.data',
+            'clus.NomeCluster',
+            'os.endereco',
+            'class.tipoOs',
+            'os.hoInicio',
+            'os.horFim',
+            'os.solClaro',
+            'os.solClaro',
+            'os.idUnicoCluster',
+            'cpl.fotoAntes',
+            'cpl.omClaro',
+            DB::raw("CONCAT(Prefixo, '-', NumPrefixo) as Prefixo")
+        )->where('os.idProcess', '=', 10)
+        ->get();
       }
 }
