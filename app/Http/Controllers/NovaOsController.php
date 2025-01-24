@@ -240,11 +240,33 @@ class NovaOsController extends Controller
         } else {
             // dd(pathinfo($dados->getOriginalFileName(), PATHINFO_FILENAME));
 
-            //dd($dados);
+           // dd($dados);
+               $dadosAntes = $dados['fotoAnts'];
+               $dadosDurante =  $dados['fotoDurante'];
+               $dadosDepois =  $dados['fotoDepois'];
 
-            $dadosAntes = $dados['fotoAnts'];
-            $dadosDurante =  $dados['fotoDurante'];
-            $dadosDepois =  $dados['fotoDepois'];
+            $inputValuesdadosAntes = [];
+            $inputValuesdadosDurante = [];
+            $inputValuesdadosDepois = [];
+            foreach($dadosAntes as $f ){
+               $name =  $f->getClientOriginalName();
+               $inputValuesdadosAntes[] = $name;
+               $juntarAntes = implode(';', $inputValuesdadosAntes);
+             }
+              foreach($dadosDurante as $f ){
+                $name =  $f->getClientOriginalName();
+                $inputValuesdadosDurante[] = $name;
+                $juntarDurante = implode(';', $inputValuesdadosDurante);
+              }
+              foreach($dadosDepois as $f ){
+                $name =  $f->getClientOriginalName();
+                $inputValuesdadosDepois[] = $name;
+                $juntarDepois = implode(';', $inputValuesdadosDepois);
+              }
+
+            // $dadosAntes = $dados['fotoAnts'];
+            // $dadosDurante =  $dados['fotoDurante'];
+            // $dadosDepois =  $dados['fotoDepois'];
 
             $pastas = ['Antes', 'Durante', 'Depois'];
 
@@ -268,19 +290,23 @@ class NovaOsController extends Controller
 
 
             foreach ($dadosAntes as $dadosA) {
-                // Salvando um arquivo dentro da pasta "Antes"
-                Storage::put("$diretorioPrincipal/Antes/", $dadosA);
+                $nomeArquivo = $dadosA->getClientOriginalName();
+                // dd($nomeArquivo);
+                $caminhoArquivo = "$diretorioPrincipal/Antes/" . $nomeArquivo;
+               Storage::put($caminhoArquivo, file_get_contents($dadosA->getRealPath()));
             }
             foreach ($dadosDurante as $dadosD) {
-                // Salvando um arquivo dentro da pasta "Durante"
-                Storage::put("$diretorioPrincipal/Durante/", $dadosD);
-            }
+                $nomeArquivoD = $dadosD->getClientOriginalName();
+                $caminhoArquivod = "$diretorioPrincipal/Durante/" . $nomeArquivoD;
+                 //náo passando o nome do arquivo ele salva um nome aleatorio dentro do banco.
+                 Storage::put($caminhoArquivod, file_get_contents($dadosA->getRealPath()));
+           }
 
             foreach ($dadosDepois as  $dadosDe) {
-
-                // Salvando um arquivo dentro da pasta "Depois"
-                Storage::put("$diretorioPrincipal/Depois/", $dadosDe);
-                //dd($dados);
+                $nomeArquivoDe = $dadosDe->getClientOriginalName();
+                $caminhoArquivode = "$diretorioPrincipal/Depois/" . $nomeArquivoDe;
+                 //náo passando o nome do arquivo ele salva um nome aleatorio dentro do banco.
+                 Storage::put($caminhoArquivode, file_get_contents($dadosA->getRealPath()));
             }
 
             //procuro para não inserir novamente nesta tela
@@ -297,10 +323,14 @@ class NovaOsController extends Controller
                         'fotoAntes' => 1,
                         'fotoDurante' => 1,
                         'fotoDepois' => 1,
+                        'fotoDuranteT' => $juntarDurante,
+                        'fotoDepoisT' => $juntarDepois,
+                        'fotoAntesT' => $juntarAntes,
+                        'updated_at' => now(),
                         'idUnicoClusterComple' => $id,
                     ];
                     //  completo_os
-                    //  dd($dadosFotos);
+                     // dd($dadosFotos);
                     DB::table('completo_os')->insert($dadosFotos); // Dados para a inserção no completo
                     DB::commit();
                     return back()->withInput()->with('msg', 'Sucesso ao inserir Usuário');
@@ -309,8 +339,10 @@ class NovaOsController extends Controller
                     DB::rollBack();
                 }
             }
-        }
+         }
     }
+
+
 
     public function DadosOsOm(Request $retornoOm)
     {
@@ -324,7 +356,7 @@ class NovaOsController extends Controller
 
 
         // PRECISO VALIDAR OS CAMPOS
-        $upd = completo_os::where('idUnicoClusterComple', $retornoOm->idUnico)->update(['omClaro' => $retornoOm->omClaro, 'osClaro' => $retornoOm->osClaro, 'updated_at' => now()]);
+        $upd = completo_os::where('idUnicoClusterComple', $retornoOm->idUnico)->update(['omClaro' => $retornoOm->omClaro, 'osClaro' => $retornoOm->osClaro, 'updated_os' => now()]);
 
         if ($upd > 0) {
             return back()->withInput()->with('msg', 'Sucesso ao Inserir Om e Os');
@@ -335,19 +367,118 @@ class NovaOsController extends Controller
   }
     public function listarFotos(Request $idFotos){
 
-        //dd($idFotos->idUnico);
+          $file = $idFotos->file('fotoAntes');
+          //dd($file);
+          $inputValues = [];
+           foreach($file as $f ){
+            $name =  $f->getClientOriginalName();
+            //  echo "<pre>";
+            // print_r($name);
+            // echo "</pre>";
 
-        $da = public_path('storage/image/'. $idFotos->idUnico);
 
-          if (Storage::exists($da)) {
+              $inputValues[] = $name;
+              $juntar = implode(';', $inputValues);
+            //  echo "<pre>";
+            //  print_r($juntar);
+            //  echo "</pre>";
 
-             dd("t");
-        }
-        //dd($da);
+            //  $numero = [];
+            //  for ($J = 1; isset($_POST["input{$J}"]) && isset($_POST["numero{$J}"]); $J++) {
+            //             // Obtendo o valor de cada input e adicionando ao array
+            //             $inputValues[] = $_POST["input{$J}"];
+            //             $numero[] = $_POST["numero{$J}"];
 
-        if(is_dir($da)){
-            dd("e um diretorio");
-        }
+            //          }
+                       //junto todos os cabos e depois vou recuperar e separar por ponto e virgula
+                         //$juntar = implode(';', $inputValues);
+                          // echo "<pre>";
+                          // print_r($juntar);
+
+             //  $f->store();
+
+         //  $updd = completo_os::where('idUnicoClusterComple', $idFotos->idUnico)->update(['fotoAntesT' => $juntar]);
+
+
+
+
+          }
+
+          //tentar Exibir a image/
+          $upd = completo_os::where('idUnicoClusterComple', $idFotos->idUnico)->select('fotoAntesT')->first();
+        //   echo "<pre>";
+        //   print_r($upd->fotoAntesT);
+        //   echo "</pre>";
+
+            //separar nome
+
+            $nomeSeparado = explode(';', $upd->fotoAntesT);
+            echo "<pre>";
+            print_r($nomeSeparado);
+            echo "</pre>";
+             foreach($nomeSeparado as $arquivos){
+                echo "<pre>";
+                print_r($arquivos);
+                echo "</pre>";
+
+
+             $path = storage_path("public\image\\".$idFotos->idUnico.'\Antes\\' . $arquivos);
+
+             $resultado = Storage::files('/public/image/'.$idFotos->idUnico.'/Antes/'. $arquivos);
+                //  echo '<img src="{{ asset('. $resultado.') }}" alt="Imagem">';
+                echo "<img src='{{ asset('/image/'.$idFotos->idUnico.'/Antes/'. $arquivos') }}' alt='Imagem' style='width: 500px; height: auto; margin: 10px;'>";
+                // <img src="{{asset('storage/'.$image_name}}">
+            }
+                 echo "<pre>";
+                 print_r($path);
+                 echo "</pre>";
+                 if (!empty($resultado)) {
+                    echo "<div>"; // Pode adicionar uma div para agrupar as imagens
+                    foreach ($resultado as $arquivo) {
+                        // Gera a URL pública para cada imagem
+                        echo "<pre>";
+                        print_r($arquivo);
+                        echo "</pre>";
+                        $urlImagem = Storage::url($arquivo);
+                        echo "<pre>";
+                        print_r($urlImagem);
+                        echo "</pre>";
+                        //  <img src='$completo'style='width:200px; margin 10px;'>
+                                          // Exibe a imagem usando a tag <img>
+
+
+                        print_r( "<img src=' $urlImagem' alt='Imagem' style='width: 300px; height: auto; margin: 10px;'>");
+                    }
+                    echo "</div>";
+                } else {
+                    echo "Nenhuma imagem encontrada.";
+                }
+
+             }
+
+
+       //   $file->move(public_path('teste'), $name);
+
+
+
+
+
+
+        // $templatePath = public_path('/storage/public');
+        // $files = Storage::files('/storage/public/image/'.$idFotos.'/Antes');
+        // dd($files);
+
+        // $da = public_path('storage/image/'. $idFotos->idUnico);
+
+        //   if (Storage::get($templatePath)) {
+
+        //      dd("t");
+        // }
+        // //dd($da);
+
+        // if(is_dir($da)){
+        //     dd("e um diretorio");
+        // }
 
 }
-}
+// }

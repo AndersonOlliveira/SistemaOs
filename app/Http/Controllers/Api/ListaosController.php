@@ -22,31 +22,34 @@ use ZipArchive;
 class ListaosController extends Controller
 {
 
-     public function index() :JsonResponse{
+    public function index(): JsonResponse
+    {
 
         $os = Cadastroos::obterDadosComPrefixo();
 
         return response()->json([
-           'Status' => 2,
-           'data' => $os,
-           'mensage' => 'Sucesso ao consultar'
-        ],200);
-     }
-
-
-     public function osFechadas() :JsonResponse{
-
-         $fechar = Cadastroos::obterOsfechadas();
-
-         return response()->json([
             'Status' => 2,
-            'data' => $fechar,
+            'data' => $os,
             'mensage' => 'Sucesso ao consultar'
-         ], 200);
+        ], 200);
     }
 
 
-      public function listaProdutos() :JsonResponse{
+    public function osFechadas(): JsonResponse
+    {
+
+        $fechar = Cadastroos::obterOsfechadas();
+
+        return response()->json([
+            'Status' => 2,
+            'data' => $fechar,
+            'mensage' => 'Sucesso ao consultar'
+        ], 200);
+    }
+
+
+    public function listaProdutos(): JsonResponse
+    {
 
         $listaProd = descritivo_produto::all();
 
@@ -54,9 +57,8 @@ class ListaosController extends Controller
             'Status' => 2,
             'data' => $listaProd,
             'mensage' => 'Sucesso ao consultar'
-         ],200);
-
-      }
+        ], 200);
+    }
 
     //   public function listaDadosCluster(): JsonResponse{
 
@@ -70,66 +72,86 @@ class ListaosController extends Controller
 
     //   }
 
-      public function teste($cluster, $idUnico) {
+    public function teste($cluster, $idUnico)
+    {
 
-         // dd($id, $cluster, $idUnico);
-          $listaDadosPorCluster = produtos_usos::obterDadosProdutos($cluster,$idUnico);
+        // dd($id, $cluster, $idUnico);
+        $listaDadosPorCluster = produtos_usos::obterDadosProdutos($cluster, $idUnico);
 
-           //dd($listaDadosPorCluster);
-         //
-  if($listaDadosPorCluster->count() > 0 ){
+        //dd($listaDadosPorCluster);
+        //
+        if ($listaDadosPorCluster->count() > 0) {
 
+            return response()->json([
+                'status' => 'success',
+                'dados' => $listaDadosPorCluster,
+                // Outros dados que você deseja enviar
+            ]);
+        }
         return response()->json([
-            'status' => 'success',
-            'dados' => $listaDadosPorCluster,
+            'status' => '1',
+            'dados' => 'Falha ao consultar Verificque',
             // Outros dados que você deseja enviar
         ]);
-    } return response()->json([
-        'status' => '1',
-        'dados' => 'Falha ao consultar Verificque',
-        // Outros dados que você deseja enviar
-    ]);
-   }
-   public function excel($idUnico) { //:JsonResponse{
+    }
 
 
-        $i_node = 16; //INDICA APARTIR DE QUAL LINHA DEVEMOS COMEÇAR ESCREVER NA PLANILHA
+    public function formatarValor($valor)
+    {
+        // Remove o "R$" e a vírgula e converte para número (float)
+        return (float) str_replace(['R$', '.'], ['', ''], $valor);
+    }
+    public function excel($idUnico)
+    { //:JsonResponse{
+
+
+        $i_linha = 16; //INDICA APARTIR DE QUAL LINHA DEVEMOS COMEÇAR ESCREVER NA PLANILHA
         $templatePath = public_path('/template/lista.xlsx');  // Usando public_path() para obter o caminho correto
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-		$spreadsheet = $reader->load($templatePath);
+        $spreadsheet = $reader->load($templatePath);
         $sheet = $spreadsheet->getActiveSheet();
 
         $user = Cadastroos::obterDadosExecell($idUnico);  // Supondo que você tenha dados para preencher
-
+        $numero = [];
+        $valores = [];
         foreach ($user as $index => $u) {
-        $sheet->setCellValue('B7', $u->data);
+           // dd($u);
+            $sheet->setCellValue('B8', $u->data);
+            $sheet->setCellValue('C2', $u->NomeCluster);
+            $sheet->setCellValue('B9', $u->updated_os);
+            $sheet->setCellValue('B10', $u->NomeCluster);
+            $multiplicar = ((int)$u->valor * (int)$u->QuantidadeProd);
+            $valores[] = $multiplicar;
+            $valorUnitario = 'R$ ' . number_format((int)$u->valor, 2, ',', '.');
+            $valorFormatado = 'R$ ' . number_format((int)$multiplicar, 2, ',', '.');
+            // Preencher os dados na planilha a partir da linha $i_node
 
-        $multiplicar = $u->valor * $u->QuantidadeProd;
-        $valorUnitario = 'R$ ' . number_format($u->valor, 2, ',', '.');
-        $valorFormatado = 'R$ ' . number_format($multiplicar, 2, ',', '.');
-
-        // Preencher os dados na planilha a partir da linha $i_node
-
-            $sheet->setCellValue('A' . ($i_node + $index), $u->item);        // Exemplo: CÓDIGO
-            $sheet->setCellValue('B' . ($i_node + $index), $u->descricao);      // Exemplo: descricao
-            $sheet->setCellValue('H' . ($i_node + $index), $u->unidadeMedida);     // Exemplo: unidadeMedida
-            $sheet->setCellValue('I' . ($i_node + $index), $u->QuantidadeProd); // Exemplo: Data de Criação
-            $sheet->setCellValue('J' . ($i_node + $index), $valorUnitario); // Exemplo: Data de Atualização
-            $sheet->setCellValue('K' . ($i_node + $index), $valorFormatado); // Exemplo: Data de Atualização
-            $sheet->setCellValue('K' . ($i_node + $index), $valorFormatado); // Exemplo: Data de Atualização
-           // $sheet->setCellValue('C'. ($i_node + $index),$somar); // Exemplo: Data de Atualização
+            $sheet->setCellValue('A' . ($i_linha + $index), $u->item);
+            $sheet->setCellValue('B' . ($i_linha + $index), $u->descricao);
+            $sheet->setCellValue('H' . ($i_linha + $index), $u->unidadeMedida);
+            $sheet->setCellValue('I' . ($i_linha + $index), (int)$u->QuantidadeProd);
+            $sheet->setCellValue('J' . ($i_linha + $index), $valorUnitario);
+            $sheet->setCellValue('K' . ($i_linha + $index), $valorFormatado);
+            $numero[] = $i_linha + $index + 10;
 
         }
+        // Variável para armazenar a soma total
+        $total = 0;
+        foreach ($valores as $valor) {
+            $total += $this->formatarValor($valor);
+        }
+        $totalFor = "R$ " . number_format($total, 2, ',', '.');
+        $sheet->setCellValue('C' . (end($numero)), $totalFor);
 
-         // Criar o Writer para salvar o arquivo Excel
+        // Criar o Writer para salvar o arquivo Excel
         $writer = new Xlsx($spreadsheet);
 
         // Definir o nome do arquivo para download
-        $filename = 'user_template_filled.xlsx';
+        $filename = 'lista_materiais_filled.xlsx';
 
         // Fazer o download do arquivo gerado sem a necessidade de ZIP
         return response()->stream(
-            function() use ($writer) {
+            function () use ($writer) {
                 $writer->save('php://output');  // Salvar diretamente para a saída (stream)
             },
             200,
@@ -140,6 +162,4 @@ class ListaosController extends Controller
             ]
         );
     }
-
 }
-

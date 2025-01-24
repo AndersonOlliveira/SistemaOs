@@ -43,6 +43,7 @@ class Cadastroos extends Model
         ->leftJoin('produtos_uso as pd', 'pd.idUnicoCluster', '=' ,'cad.idUnicoCluster')
         ->leftJoin('descritivo_produtos as dp','dp.id', '=' ,'pd.idProdutoDesc')
         ->leftJoin('completo_os as cp' ,'cp.idUnicoClusterComple',  '=', 'cad.idUnicoCluster')
+        ->leftjoin('clusters as cl', 'cl.id', '=', 'pd.idCidade')
         ->select('*'
         )->where('pd.idUnicoCluster', '=', $idUnico)  // Condição para 'idUnicoCluster'
         ->get();

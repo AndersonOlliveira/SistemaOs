@@ -20,7 +20,7 @@
     <a class="btn btn-primary" data-toggle="collapse" href="#NovaOs" role="button" aria-expanded="false" aria-controls="collapseExample">
         Nova Os
     </a>
-    <a class="btn btn-info" data-toggle="collapse" href="#osFechadas" role="button" aria-expanded="false" aria-controls="collapseExample">
+    <a class="btn btn-info teste" data-toggle="collapse" href="#osFechadas" role="button"  aria-expanded="false" aria-controls="collapseExample">
         Os Fechadas
     </a>
 </p>
@@ -151,11 +151,7 @@
 
 <!-- LISTAR DADOS MODAL EM FORMATO TABELA -->
 <div class="modal fade bd-example-modal-lg" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
-
-
 <div class="modal-dialog modal-lg" id="ajuste modal" style="max-width: 100%; width: auto; display: table;">
-
 <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Lista Produtos utilizados</h1>
@@ -189,12 +185,12 @@
               </div>
               </div>
               <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Outra pagina
-                  <form method="post" action="{{route('listarFotos')}}">
                    @csrf
-                   <input type="hidden" name="idUnico" id="idUnico">
-                   <input type="submit" class="btn btn-primary" value="listar"/>
-                 </form>
-             </div>
+                   <div id="arquivo" class="container"></div>
+                   <div id="arquivoD" class="container"></div>
+                   <div id="arquivoDE" class="container"></div>
+
+                 </div>
              </div>
 
 

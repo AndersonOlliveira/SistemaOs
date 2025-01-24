@@ -252,13 +252,24 @@ function carregarOsfechada(){
 function CarregaOs() {
 
     $(document).ready(function () {
-        $('#listaOs').DataTable({
+      var  table = $('#listaOs').DataTable({
             scrollX: true,
             ajax: {
                 url: '/api/ListaOs',
                 // method:'get', // URL da API
                 dataSrc: 'data',  // Define que a resposta será um array (sem chave para acessar)
               },
+              columnDefs: [
+                {
+                    orderable: false,
+                    render: DataTable.render.select(),
+                    targets: 0
+                }
+            ],
+            select: {
+                style: 'os',
+                selector: 'td:first-child'
+            },
             columns: [
                 { data: 'id' },
                 { data: 'Equipe' },
@@ -337,10 +348,39 @@ function CarregaOs() {
             // Botão para fechar os
             buttons += '<button class="btn btn-danger btnFechar" onclick="FecharOs(' + row.idUnicoCluster + ', ' + row.id + ')"> Fechar Os</button>';
 
+            buttons += '<button class="btn btn-danger btnFechar" id="meuBotao"data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '"  > teste</button>';
+
             return buttons;
         },
     }
     ]
+});
+
+$('#listaOs').on('click', '#meuBotao', function() {
+    // Obtém as linhas selecionadas
+    var selectedRows = table.row({ selected: true }).data();
+
+    console.log(selectedRows);
+    var idsSelecionados = [];
+
+    // Pega os IDs das linhas selecionadas
+    selectedRows.foreach(function(rowData) {
+        idsSelecionados.push(rowData.id); // Aqui você pega o ID da linha (ajuste conforme a sua estrutura de dados)
+    });
+
+    if (idsSelecionados.length > 0) {
+        // Faça algo com os IDs selecionados, como exibir ou processar as informações
+        console.log("IDs selecionados: ", idsSelecionados);
+
+        // Por exemplo, aqui você pode adicionar uma nova informação às linhas selecionadas
+        selectedRows.each(function(rowData, index) {
+            // Suponhamos que você queira modificar um campo específico das linhas selecionadas:
+            table.cell(rowData, 2).data('Nova informação').draw(); // Aqui, altere a célula da coluna 2
+        });
+
+    } else {
+        alert("Nenhuma linha selecionada!");
+    }
 });
 
         // Evento para abrir o modal ao clicar no botão "Editar"
@@ -387,7 +427,7 @@ function CarregaOs() {
 
             // chama o modal
 
-
+            listaFotos(rowIdUnico);
              ListarDadosRota(rowId,rowIdUnico);
         });
 
@@ -479,6 +519,159 @@ function FecharOs(id,idtabela){
     return false;
  }
 }
+function listaFotos(id){
+
+    $.ajax({
+        url: '/api/SolitaFoto/'+ id,  // Rota criada em Laravel
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            if (response.Status == 2) {
+                var dados = response.data;
+                console.log(dados);
+                  $.each(dados, function (i, val) {
+                     var id  = val.id;
+                     var dadosAntes = val.fotoAntesT;
+                     var dadosDurante = val.fotoDuranteT;
+                     var dadosDepois = val.fotoDepoisT;
+                     var retorno = dadosAntes.split(";");
+                     var retornoDurante = dadosDurante.split(";");
+                     var retornoDepois = dadosDepois.split(";");
+                     $.each(retorno, function (i, te) {
+                        let nome = te;
+                        let caminhoImagem = "storage/public/image/" + id + "/Antes/" + encodeURIComponent(nome);
+
+                        // Cria a imagem
+                        let img = document.createElement('img');
+                        img.src = caminhoImagem;
+                        img.style.width = "200px";
+                        img.style.height = "200px";
+
+                        // Cria o label e define o texto
+                        let label = document.createElement('label');
+                        label.textContent = 'Foto Antes: ';
+
+
+                        let container = document.getElementById('arquivo');
+
+                        // Cria o link de download
+                        let downloadLink = document.createElement('a');
+                        downloadLink.href = caminhoImagem;
+                        downloadLink.download = nome;
+                        // Cria o texto para o link
+                        let linkText = document.createTextNode("Clique para baixar a foto");
+
+                        // Adiciona o texto ao link
+                        downloadLink.appendChild(linkText);
+
+                        // Adiciona o label ao container
+                        container.appendChild(label);
+
+                        // Adiciona a imagem ao container
+                        container.appendChild(img);
+
+                        // Adiciona o link de download ao container
+                        container.appendChild(downloadLink);
+                });
+                $.each(retornoDurante, function (i, tes) {
+                    let nome = tes;
+                    let caminhoImagem = "storage/public/image/" + id + "/Durante/" + encodeURIComponent(nome);
+
+                    // Cria a imagem
+                    let img = document.createElement('img');
+                    img.src = caminhoImagem;
+                    img.style.width = "200px";
+                    img.style.height = "200px";
+
+                    // Cria o label e define o texto
+                    let label = document.createElement('label');
+                    label.textContent = 'Foto Durante: ';
+
+
+                    let container = document.getElementById('arquivoD');
+
+                    // Cria o link de download
+                    let downloadLink = document.createElement('a');
+                    downloadLink.href = caminhoImagem;
+                    downloadLink.download = nome;
+                    // Cria o texto para o link
+                    let linkText = document.createTextNode("Clique para baixar a foto");
+
+                    // Adiciona o texto ao link
+                    downloadLink.appendChild(linkText);
+
+                    // Adiciona o label ao container
+                    container.appendChild(label);
+
+                    // Adiciona a imagem ao container
+                    container.appendChild(img);
+
+                    // Adiciona o link de download ao container
+                    container.appendChild(downloadLink);
+            });
+            $.each(retornoDepois, function (i, tess) {
+                let nome = tess;
+                let caminhoImagem = "storage/public/image/" + id + "/Depois/" + encodeURIComponent(nome);
+
+                // Cria a imagem
+                let img = document.createElement('img');
+                img.src = caminhoImagem;
+                img.style.width = "200px";
+                img.style.height = "200px";
+
+                // Cria o label e define o texto
+                let label = document.createElement('label');
+                label.textContent = 'Foto Depois: ';
+
+
+                let container = document.getElementById('arquivoDE');
+
+                // Cria o link de download
+                let downloadLink = document.createElement('a');
+                downloadLink.href = caminhoImagem;
+                downloadLink.download = nome;
+                // Cria o texto para o link
+                let linkText = document.createTextNode("Clique para baixar a foto");
+
+                // Adiciona o texto ao link
+                downloadLink.appendChild(linkText);
+
+                // Adiciona o label ao container
+                container.appendChild(label);
+
+                // Adiciona a imagem ao container
+                container.appendChild(img);
+
+                // Adiciona o link de download ao container
+                container.appendChild(downloadLink);
+        });
+
+
+
+
+   });
+
+                $.each(dados, function (i, val) {
+                //     // Append tem a função de inserir
+
+                //     var concaternart = (val.item ? val.item : 'Valor não disponível') + '-' + (val.descricao ? val.descricao : 'Descrição não disponível');
+                //    /// console.log(concaternart);
+                //         $('#produto').append($("<option>", { value: val.id, text: concaternart }));
+                //         $('#idDescricao').append($("<input>", { value: val.id, text: val.id }));
+
+                 });
+
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log("Erro ao carregar cluster: " + error);
+        }
+    });
+
+
+}
 
 function enviarFormulario(id){
     $.ajax({
@@ -490,7 +683,7 @@ function enviarFormulario(id){
     },                       // Espera uma resposta no formato JSON
         success: function(response) {
 
-            console.log(response);
+          //  console.log(response);
           if(response.status == 1) {
             alert('Dados Não localizados Por favor preencha envie os dados' );
 
@@ -516,9 +709,7 @@ function enviarFormulario(id){
 
 }
 function CarregaProdutos() {
-
-
-    $.ajax({
+  $.ajax({
         url: '/api/ListaProdutos',  // Rota criada em Laravel
         type: 'GET',
         dataType: 'json',
