@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -10,13 +12,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 //use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+// use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Drawing;
 use ZipArchive;
 
 class ListaosController extends Controller
@@ -75,7 +79,7 @@ class ListaosController extends Controller
     public function teste($cluster, $idUnico)
     {
 
-        // dd($id, $cluster, $idUnico);
+        //   dd($cluster, $idUnico);
         $listaDadosPorCluster = produtos_usos::obterDadosProdutos($cluster, $idUnico);
 
         //dd($listaDadosPorCluster);
@@ -101,21 +105,55 @@ class ListaosController extends Controller
         // Remove o "R$" e a vírgula e converte para número (float)
         return (float) str_replace(['R$', '.'], ['', ''], $valor);
     }
+
     public function excel($idUnico)
     { //:JsonResponse{
+        ini_set('max_execution_time', 3600); // 3600 seconds = 60 minutes
+        set_time_limit(3600);
 
 
         $i_linha = 16; //INDICA APARTIR DE QUAL LINHA DEVEMOS COMEÇAR ESCREVER NA PLANILHA
         $templatePath = public_path('/template/lista.xlsx');  // Usando public_path() para obter o caminho correto
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        // $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $spreadsheet = $reader->load($templatePath);
         $sheet = $spreadsheet->getActiveSheet();
 
         $user = Cadastroos::obterDadosExecell($idUnico);  // Supondo que você tenha dados para preencher
         $numero = [];
         $valores = [];
+
         foreach ($user as $index => $u) {
-           // dd($u);
+
+            $explode = explode(';', $u->fotoAntesT);
+            foreach ($explode as $key => $value) {
+
+              //  $diretorio = storage_path('public/image/' . $idUnico . '/Antes/' . $value);
+
+                $url = Storage::url('public/image/' . $idUnico . '/Antes/' . $value);
+                $base = base_path('public/image/' . $idUnico . '/Antes/' . $value);
+                ///dd($url);
+
+                $drawing = new Drawing();
+                $drawing->setWorksheet($sheet);
+                $drawing ->setName('Paid');
+                $drawing ->setDescription('Paid');
+                $drawing ->setPath('storage/public/image/' . $idUnico . '/Antes/' . $value);
+                $drawing ->setCoordinates('M16');
+                // $drawing ->setOffsetX(110);
+                // $drawing ->setRotation(25);
+                 $drawing->setHeight(200);
+
+                // $spreadsheet->getActiveSheet()->getHeaderFooter()->addImage($drawing, \PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooter::IMAGE_HEADER_LEFT);
+                //$drawing->setWorksheet($spreadsheet->getActiveSheet());
+            //     $sheet->getShadow()->setVisible(true);
+            //     $sheet->getShadow()->setDirection(45);
+             }
+
+
+
+
+
             $sheet->setCellValue('B8', $u->data);
             $sheet->setCellValue('C2', $u->NomeCluster);
             $sheet->setCellValue('B9', $u->updated_os);
@@ -133,7 +171,6 @@ class ListaosController extends Controller
             $sheet->setCellValue('J' . ($i_linha + $index), $valorUnitario);
             $sheet->setCellValue('K' . ($i_linha + $index), $valorFormatado);
             $numero[] = $i_linha + $index + 10;
-
         }
         // Variável para armazenar a soma total
         $total = 0;

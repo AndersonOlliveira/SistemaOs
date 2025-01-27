@@ -360,7 +360,7 @@ $('#listaOs').on('click', '#meuBotao', function() {
     // Obtém as linhas selecionadas
     var selectedRows = table.row({ selected: true }).data();
 
-    console.log(selectedRows);
+    //console.log(selectedRows);
     var idsSelecionados = [];
 
     // Pega os IDs das linhas selecionadas

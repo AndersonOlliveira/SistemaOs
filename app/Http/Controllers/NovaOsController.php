@@ -21,7 +21,7 @@ class NovaOsController extends Controller
     public function novaOs(Request $dadosOs)
     {
 
-        //dd($dadosOs);
+       // dd($dadosOs);
         $controllerValidade = new  ValidaCamposController();
         //chamando outra contoller pra validar
         $r = $controllerValidade->validaOs($dadosOs);
@@ -32,8 +32,10 @@ class NovaOsController extends Controller
 
         //preparar para inserir
         $numeroRan = date('d') + date('m') + date('y') + date('h') + date('i') + date('s');
+        $process = 0;
 
         DB::beginTransaction();
+
         try {
 
             $dadosInsert = [
@@ -48,16 +50,17 @@ class NovaOsController extends Controller
                 'Prefixo' => $dadosOs->Prefixo,
                 'NumPrefixo'  => $dadosOs->NumPrefixo,
                 'idUnicoCluster' => $numeroRan,
+                'idProcess' => $process,
                 'created_at' => now()
             ];
 
             DB::table('cadastro_os')->insert($dadosInsert);
 
-            DB::commit();
-            return back()->withInput()->with('msg', 'Sucesso ao inserir Usuário');
+           DB::commit();
+           return back()->withInput()->with('msg', 'Sucesso ao inserir Usuário');
             //dd('no commit');
         } catch (\Exception $e) {
-            return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
+           return back()->withInput()->with('msg', 'Falha ao Inserir, por favor contate o Administrador');
             DB::rollBack();
             //dd('no rollBack');
         }

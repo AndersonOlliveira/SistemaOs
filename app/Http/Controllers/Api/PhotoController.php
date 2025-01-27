@@ -12,7 +12,9 @@ class PhotoController extends Controller
     public function getPhotos($id)
     {
 
-         $upd = completo_os::where('idUnicoClusterComple', $id)->select('fotoAntesT','idUnicoClusterComple as id','fotoDuranteT','fotoDepoisT')->get();
+         $upd = completo_os::where('idUnicoClusterComple', $id)
+         ->select('fotoAntesT','idUnicoClusterComple as id','fotoDuranteT','fotoDepoisT')
+         ->get();
 
          return response()->json([
             'Status' => 2,
