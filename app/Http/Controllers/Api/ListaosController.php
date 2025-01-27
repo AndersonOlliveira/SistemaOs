@@ -107,7 +107,7 @@ class ListaosController extends Controller
     }
 
     public function excel($idUnico)
-    { //:JsonResponse{
+    {
         ini_set('max_execution_time', 3600); // 3600 seconds = 60 minutes
         set_time_limit(3600);
 
@@ -118,40 +118,20 @@ class ListaosController extends Controller
         // $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $spreadsheet = $reader->load($templatePath);
         $sheet = $spreadsheet->getActiveSheet();
+        $drawing = new Drawing();
+        $drawing->setWorksheet($sheet);
+        $spreadsheet->getActiveSheet(1)->setTitle('Lista Material');
+
 
         $user = Cadastroos::obterDadosExecell($idUnico);  // Supondo que você tenha dados para preencher
         $numero = [];
         $valores = [];
-
+        $fotoD = [];
+        $fotoDu = [];
         foreach ($user as $index => $u) {
-
-            $explode = explode(';', $u->fotoAntesT);
-            foreach ($explode as $key => $value) {
-
-              //  $diretorio = storage_path('public/image/' . $idUnico . '/Antes/' . $value);
-
-                $url = Storage::url('public/image/' . $idUnico . '/Antes/' . $value);
-                $base = base_path('public/image/' . $idUnico . '/Antes/' . $value);
-                ///dd($url);
-
-                $drawing = new Drawing();
-                $drawing->setWorksheet($sheet);
-                $drawing ->setName('Paid');
-                $drawing ->setDescription('Paid');
-                $drawing ->setPath('storage/public/image/' . $idUnico . '/Antes/' . $value);
-                $drawing ->setCoordinates('M16');
-                // $drawing ->setOffsetX(110);
-                // $drawing ->setRotation(25);
-                 $drawing->setHeight(200);
-
-                // $spreadsheet->getActiveSheet()->getHeaderFooter()->addImage($drawing, \PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooter::IMAGE_HEADER_LEFT);
-                //$drawing->setWorksheet($spreadsheet->getActiveSheet());
-            //     $sheet->getShadow()->setVisible(true);
-            //     $sheet->getShadow()->setDirection(45);
-             }
-
-
-
+        $explode = explode(';', $u->fotoAntesT);
+        $fotoD = explode(';', $u->fotoDuranteT);
+        $fotoDu = explode(';', $u->fotoDepoisT);
 
 
             $sheet->setCellValue('B8', $u->data);
@@ -170,7 +150,56 @@ class ListaosController extends Controller
             $sheet->setCellValue('I' . ($i_linha + $index), (int)$u->QuantidadeProd);
             $sheet->setCellValue('J' . ($i_linha + $index), $valorUnitario);
             $sheet->setCellValue('K' . ($i_linha + $index), $valorFormatado);
+
+            foreach ($explode as $key => $value) {
+                $sheet->setCellValue('L1', 'Fotos Antes');
+                $drawing ->setName('Fotos Antes:');
+                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                $drawing->setName('Fotos Antes: ' . $value);
+                $drawing->setPath('storage/public/image/' . $idUnico . '/Antes/' . $value);
+                $drawing->setCoordinates('L' . (10 + $key));
+                $drawing->setHeight(150);
+                $drawing->setWidth(150);
+                $drawing->setOffsetX(20);
+                $drawing->setOffsetY(20);
+                $sheet->getRowDimension(10)->setRowHeight(200);
+                $sheet->getColumnDimension('L')->setWidth(50,'pt');
+                $drawing->setWorksheet($sheet);
+            }
+            foreach ($fotoDu as $key => $value) {
+                $sheet->setCellValue('R1', 'Fotos Durante');
+               $drawing ->setName('Fotos Durante:');
+               $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+               $drawing->setName('Fotos Durante: ' . $value);
+               $drawing->setPath('storage/public/image/' . $idUnico . '/Durante/' . $value);
+               $drawing->setCoordinates('R' . (10 + $key));
+               $drawing->setHeight(150);
+               $drawing->setWidth(150);
+               $drawing->setOffsetX(20);
+               $drawing->setOffsetY(20);
+               $sheet->getRowDimension(10)->setRowHeight(200);
+               $sheet->getColumnDimension('R')->setWidth(50,'pt');
+               $drawing->setWorksheet($sheet);
+           }
+            foreach ($fotoD as $key => $value) {
+                $sheet->setCellValue('O1', 'Fotos Depois');
+                $drawing ->setName('Fotos Depois:');
+                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                $drawing->setName('Fotos Depois: ' . $value);
+                $drawing->setPath('storage/public/image/' . $idUnico . '/Depois/' . $value);
+                $drawing->setCoordinates('O' . (10 + $key));
+                $drawing->setHeight(150);
+                $drawing->setWidth(150);
+                $drawing->setOffsetX(20);
+                $drawing->setOffsetY(20);
+                $sheet->getRowDimension(10)->setRowHeight(200);
+                $sheet->getColumnDimension('O')->setWidth(50,'pt');
+                $drawing->setWorksheet($sheet);
+            }
+
+
             $numero[] = $i_linha + $index + 10;
+
         }
         // Variável para armazenar a soma total
         $total = 0;
@@ -178,7 +207,13 @@ class ListaosController extends Controller
             $total += $this->formatarValor($valor);
         }
         $totalFor = "R$ " . number_format($total, 2, ',', '.');
-        $sheet->setCellValue('C' . (end($numero)), $totalFor);
+        // dd($numero);
+          if((end($numero) < 32)){
+            $sheet->setCellValue('C32', $totalFor);
+         }else{
+            $sheet->setCellValue('C' . (end($numero)), $totalFor);
+         }
+
 
         // Criar o Writer para salvar o arquivo Excel
         $writer = new Xlsx($spreadsheet);
