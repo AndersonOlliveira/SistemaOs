@@ -46,6 +46,9 @@
       <script src="js/datatables/buttons/buttons.html5.min.js"> </script>
       <script src="js/bootstrap/js/bootstrap.min.js"> </script>
       <script src="js/bootstrap/js/bootstrap.bundle.js"> </script>
+      <script src="js/datatables/datatables.net-dt/js/dataTables.select.js"> </script>
+       <script src="js/datatables/datatables.net-dt/js/dataTables.buttons.js"> </script>
+       <script src="js/datatables/datatables.net-dt/js/buttons.dataTables.js"> </script>
 
    @stack('scripts')  <!-- Aqui você inclui os scripts específicos de cada página -->
 

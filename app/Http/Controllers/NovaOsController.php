@@ -460,6 +460,12 @@ class NovaOsController extends Controller
              }
 
 
+        public function AllOms(Request $dados){
+
+            return back()->withInput()->with('msg', 'Botão em Construção!');
+        }
+
+
        //   $file->move(public_path('teste'), $name);
 
 

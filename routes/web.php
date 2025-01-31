@@ -41,6 +41,7 @@ Route::post('/DadosOsOm', [NovaOsController::class, 'DadosOsOm'])->name('adicion
 Route::post('/listarFotos', [NovaOsController::class, 'listarFotos'])->name('listarFotos');
 
 Route::post('/adicionaServico', [NovaOsController::class, 'adicionaServico'])->name('adicionaServico');
+Route::post('/Allos', [NovaOsController::class, 'AllOms'])->name('AllOms');
 
 
 

@@ -15,12 +15,49 @@
     </ul>
 </div>
 @endif
+<!-- myModalteste -->
+<!-- Modal -->
+<div class="modal fade" id="myModalteste" tabindex="-1" role="dialog" aria-labelledby="modalInserirOm" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalInserirOm">Inserir Multiplos Om </h5>
+                <button type="button" id="fecharModal" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                 </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('AllOms')}}" method="post" class="form-control">
+                    @csrf
+                    <div class="form-group">
+                    <div class="container">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <label>Informe OM CLARO</label>
+                            <input type="text" name="omClaro" id="omClaro" class="form-control" placeholder="Digite Om Claro">
+                        </div>
+                        <div class="col-md-10">
+                            <label>Informe OS CLARO</label>
+                            <input type="text" name="osClaro" id="osClaro" class="form-control" placeholder="Digite Os Claro">
+                        </div>
+                    </div>
+                    <input type="hidden" name="idUnioEditars" id="idClusterMultiplos" value="">
+                     <div class="col-md-2">
+                       <input type="submit" class="btn btn-info" value="enviar" />
+                    </div>
+                  </div>
+                  </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <p>
     <a class="btn btn-primary" data-toggle="collapse" href="#NovaOs" role="button" aria-expanded="false" aria-controls="collapseExample">
         Nova Os
     </a>
-    <a class="btn btn-info teste" data-toggle="collapse" href="#osFechadas" role="button"  aria-expanded="false" aria-controls="collapseExample">
+    <a class="btn btn-info teste" data-toggle="collapse" href="#osFechadas" role="button" aria-expanded="false" aria-controls="collapseExample">
         Os Fechadas
     </a>
 </p>
@@ -86,30 +123,30 @@
     </div>
 </div>
 <div class="collapse" id="osFechadas">
-  <div class="card card-body">
-  <table id="listaOFechada" class="display nowrap" style="width:100%">
-    <thead>
-        <tr>
-            <th>id</th>
-            <th>Equipe</th>
-            <th>NomeCluster</th>
-            <th>Prefixo</th>
-            <th>data</th>
-            <th>endereco</th>
-            <th>Hora Inicio</th>
-            <th>Hora Fim</th>
-            <th>Solicitante Claro</th>
-            <th>Tipo Os</th>
+    <div class="card card-body">
+        <table id="listaOFechada" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Equipe</th>
+                    <th>NomeCluster</th>
+                    <th>Prefixo</th>
+                    <th>data</th>
+                    <th>endereco</th>
+                    <th>Hora Inicio</th>
+                    <th>Hora Fim</th>
+                    <th>Solicitante Claro</th>
+                    <th>Tipo Os</th>
 
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
 
-        </tr>
-    </tbody>
- </table>
-  </div>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <hr>
 
@@ -120,6 +157,7 @@
     {{ session('msg') }}
 </p>
 @endif
+
 <!--
    <form method="post" action="{{route('ProcessArquivo')}}" enctype="multipart/form-data">
     @csrf
@@ -151,47 +189,47 @@
 
 <!-- LISTAR DADOS MODAL EM FORMATO TABELA -->
 <div class="modal fade bd-example-modal-lg" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg" id="ajuste modal" style="max-width: 100%; width: auto; display: table;">
-<div class="modal-content">
+    <div class="modal-dialog modal-lg" id="ajuste modal" style="max-width: 100%; width: auto; display: table;">
+        <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Lista Produtos utilizados</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-    <a class="nav-link active" id="ListaDados-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Dados Produtos</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Fotos</a>
-  </li>
-  </ul>
-  <div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-  <div class="modal-body">
-                <table id="ListaDados" class="table table-striped table-bordered" ellspacing="0" style="width:100%">
-                    <thead>
-                        <tr>
-                            <td>id</td>
-                            <td>Descrição</td>
-                            <td>Valor Unitário</td>
-                            <td>Quantidade</td>
-                            <td>Total</td>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <li class="nav-item">
+                    <a class="nav-link active" id="ListaDados-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Dados Produtos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Fotos</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="modal-body">
+                        <table id="ListaDados" class="table table-striped table-bordered" ellspacing="0" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <td>id</td>
+                                    <td>Descrição</td>
+                                    <td>Valor Unitário</td>
+                                    <td>Quantidade</td>
+                                    <td>Total</td>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                    </tbody>
-                </table>
-              </div>
-              </div>
-              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Outra pagina
-                   @csrf
-                   <div id="arquivo" class="container"></div>
-                   <div id="arquivoD" class="container"></div>
-                   <div id="arquivoDE" class="container"></div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Outra pagina
+                    @csrf
+                    <div id="arquivo" class="container"></div>
+                    <div id="arquivoD" class="container"></div>
+                    <div id="arquivoDE" class="container"></div>
 
-                 </div>
-             </div>
+                </div>
+            </div>
 
 
             <div class="modal-footer">

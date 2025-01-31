@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="js/datatables/datatables.net-dt/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="js/datatables/datatables.net-dt/css/buttons.dataTables.css">
+    <link rel="stylesheet" href="js/datatables/datatables.net-dt/css/dataTables.dataTables.css">
+
     <script src="js/bootstrap/js/orginalCol.js"></script>
     <script src="js/ajax.js"></script>
     <script src="js/Scripts.js"></script>
@@ -86,12 +89,14 @@
        <script src="js/popper/@popperjs/core/dist/umd/popper-base.min.js"> </script>
        <script src="js/datatables/datatables.net/js/jquery.dataTables.min.js"> </script>
        <script src="js/datatables/datatables.net-dt/js/dataTables.select.js"> </script>
-      <script src="js/datatables/buttons/jszip.min.js"> </script>
-      <script src="js/datatables/buttons/pdfmake.min.js"> </script>
-      <script src="js/datatables/buttons/vfs_fonts.js"> </script>
+       <script src="js/datatables/datatables.net-dt/js/dataTables.buttons.js"> </script>
+       <script src="js/datatables/datatables.net-dt/js/buttons.dataTables.js"> </script>
+       <script src="js/datatables/buttons/jszip.min.js"> </script>
+       <script src="js/datatables/buttons/pdfmake.min.js"> </script>
+       <script src="js/datatables/buttons/vfs_fonts.js"> </script>
       <!-- <script src="js/datatables/buttons/buttons.html5.min.js"> </script> -->
-      <script src="js/bootstrap/js/bootstrap.min.js"> </script>
-      <script src="js/bootstrap/js/bootstrap.bundle.js"> </script>
+       <script src="js/bootstrap/js/bootstrap.min.js"> </script>
+       <script src="js/bootstrap/js/bootstrap.bundle.js"> </script>
 
 
 
