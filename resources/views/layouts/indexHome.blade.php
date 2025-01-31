@@ -71,6 +71,8 @@
                             <li><img src="icons/administrador.png" width="15" height="15"><a href="addUsuario/listaUsuarios.php" style="cursor: pointer;">Listar Usuários</a></li>
                             <hr>
                             <li><img src="icons/administrador.png" width="15" height="15"><a href="{{route('cluster')}}" style="cursor: pointer;">Cad: Cluster</a></li>
+                            <hr>
+                            <li><img src="icons/administrador.png" width="15" height="15"><a href="{{route('classes')}}" style="cursor: pointer;">Info: Classes</a></li>
                         </ul>
                     </div> <!-- para terceiro botão -->
             </nav>

@@ -34,9 +34,9 @@ $(document).ready(function () {
     carregarOsfechada();
 });
 
-$(document).ready(function () {
-    CarregaProdutos();
-});
+// $(document).ready(function () {
+//     CarregaProdutos();
+// });
 function CarregaClusters() {
     $.ajax({
         url: 'api/ApiCluster',  // Rota criada em Laravel
@@ -249,7 +249,8 @@ function carregarOsfechada() {
         });
     });
 }
-function CarregaOs() {
+
+function  CarregaOs() {
     $(document).ready(function () {
         var table = $('#listaOs').DataTable({
             scrollX: true,
@@ -279,6 +280,8 @@ function CarregaOs() {
                 // method:'get', // URL da API
                 dataSrc: 'data',  // Define que a resposta será um array (sem chave para acessar)
             },
+            order:
+              [[0,'desc']],
             columnDefs: [
                 {
                     orderable: false,
@@ -314,6 +317,7 @@ function CarregaOs() {
                     render: function (data, type, row) {
                         var buttons = '';
 
+                        //console.log(row);
                         // Verifica a condição para adicionar o botão "Complentar Os"
                         if (row.fotoAntes == null) {
                             buttons += '<button class="btn btn-warning btnEditar" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '" data-target=".bd-example-modal-lg">Complentar Os</button> ';
@@ -324,11 +328,11 @@ function CarregaOs() {
                         }
                         // Se nenhuma das condições anteriores, adiciona o botão "Solicitar Execell"
                         else {
-                            buttons += '<button class="btn btn-success" onclick="enviarFormulario(' + row.idUnicoCluster + ')">Solicitar Execell</button> ';
+                            buttons += '<button class="btn btn-success" onclick="enviarFormulario(' + row.idUnicoCluster + ')">Solicitar Excel</button> ';
                         }
 
                         // Botão para adicionar serviços
-                        buttons += '<button class="btn btn-secondary btnServicos" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '" data-target=".bd-example-modal-lg">Adiconar Serviços </button> ';
+                        buttons += '<button class="btn btn-secondary btnServicos" data-id="' + row.id + '" data-classe="' + row.idClasseOs + '" data-unico="' + row.idUnicoCluster + '" data-nome="' + row.NomeCluster + '" data-target=".bd-example-modal-lg">Adiconar Serviços </button> ';
 
                         // Botão para listar dados
                         buttons += '<button class="btn btn-info btnDados" data-id="' + row.id + '" data-nome="' + row.NomeCluster + '" data-unico="' + row.idUnicoCluster + '" data-target=".bd-example-modal-lg">Listar Dados</button> ';
@@ -342,6 +346,10 @@ function CarregaOs() {
                     },
                 }
             ]
+
+
+
+
         });
 
             // Evento para abrir o modal ao clicar no botão "Editar"
@@ -363,16 +371,22 @@ function CarregaOs() {
 
         $('#listaOs tbody').on('click', '.btnServicos', function () {
             var rowId = $(this).data('id');
+
+            var rowClass = $(this).data('classe');
             var rowIdUnico = $(this).data('unico');
             var nomeCluster = $(this).data('nome');
+
             // Aqui você pode preencher o formulário do modal com os dados da linha
             $('#campoNome').val(nomeCluster);
             $('#idClusterServicos').val(rowId);
             $('#idUnicos').val(rowIdUnico);
+            $('#idClass').val(rowClass);
             //preenchêr campos
 
-            // chama o modal
+            console.log(rowClass);
 
+            // chama o modal
+             CarregaProdutos(rowClass);
             $('#modalServicos').modal('show');
         });
 
@@ -641,7 +655,9 @@ function enviarFormulario(id) {
 
 
 }
-function CarregaProdutos() {
+function CarregaProdutos(id) {
+    //id que vem da tela de adicionar servico , para pegar os dados dos produtos de acordo com a classe
+    console.log(id);
     $.ajax({
         url: '/api/ListaProdutos',  // Rota criada em Laravel
         type: 'GET',
@@ -650,20 +666,17 @@ function CarregaProdutos() {
             if (response.Status == 2) {
                 var dados = response.data;
 
-                // $('#material').change(function() {
-                //     if ($(this).is(':checked')) {
-                //         var checkboxValue = $(this).val();  // Valor da checkbox (Material)
-                //         alert('Valor da checkbox: ' + checkboxValue);  }
-                // });
-
-                $.each(dados, function (i, val) {
+                   $.each(dados, function (i, val) {
                     // Append tem a função de inserir
+
+                    //  deixar comentando por hora 31/05 , o que esta fazendo estou enviando o valor por paramento para ele pegar o id da tabela com os valores
+                   // if(val.fkidClasses == id){
 
                     var concaternart = (val.item ? val.item : 'Valor não disponível') + '-' + (val.descricao ? val.descricao : 'Descrição não disponível');
                     /// console.log(concaternart);
                     $('#produto').append($("<option>", { value: val.id, text: concaternart }));
                     $('#idDescricao').append($("<input>", { value: val.id, text: val.id }));
-
+                   //}
                 });
 
             } else {

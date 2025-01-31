@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\DB;
 class classesController extends Controller
 {
     public function index():JsonResponse{
-
-        $cluesters = DB::table('classesos')->select('id', 'tipoOs')->get();
+       $cluesters = DB::table('classesos')->select('id', 'tipoOs','idClasseOs')->get();
          return response()->json([
             'Status' => 2,
             'result' => $cluesters,

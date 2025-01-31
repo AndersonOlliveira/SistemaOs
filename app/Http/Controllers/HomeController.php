@@ -28,4 +28,11 @@ class HomeController extends Controller
 
         return view('main.cidades');
      }
+
+
+public function listaClasses(){
+
+  return view('main.classes');
+}
+
 }

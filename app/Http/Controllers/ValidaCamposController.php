@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\classeos;
 use Illuminate\Http\Request;
 
 class ValidaCamposController extends Controller
@@ -121,5 +122,34 @@ class ValidaCamposController extends Controller
 
     }
 
+   }
+   public function validaCclasses($dados){
+
+       if (!isset($dados->Nclasse)) {
+
+            return back()->withInput()->with('msg', 'Campo Classes Não pode ser Vazio');
+        }
+
+        //procuro no banco
+        $todos = classeos::all();
+        $enviFormulario = mb_strtoupper($dados->Nclasse);
+
+         foreach($todos as $valores){
+         $valoresUpper = mb_strtoupper($valores->tipoOs);
+
+          if($valoresUpper == $enviFormulario){
+             return back()->withInput()->with('msg', 'Já tem Classe com este Nome Verifique');
+          }
+        }
+
+   }
+   public function validaArquivo($arquivo){
+
+    // dd($arquivo);
+      if(empty($arquivo->file('arqquivoCsv'))){
+        return back()->withInput()->with('msg', 'Campo Arquivo Não pode ser Vazio verifique!');
+
+    }
+        //   dd(file($arquivo->file('arqquivoCsv')));
    }
 }

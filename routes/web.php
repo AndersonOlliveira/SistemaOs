@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\CluesterApicontroller;
+use App\Http\Controllers\cadastroOsContoller;
 use App\Http\Controllers\ClusterContoller;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\HomeController;
@@ -15,6 +16,8 @@ Route::post('/processarLogin', [LoginController::class, 'processLogin'])->name('
 
 //alterarSenha
 Route::post('/processarAlterar', [LoginController::class, 'processAlterarSenha'])->name('processarAlterar');
+//clesses
+Route::post('/CadClasses', [cadastroOsContoller::class, 'CadastroClases'])->name('CadClases');
 
 Route::get('/AdicionarUser', [HomeController::class, 'adduser'])->name('addUser')->middleware('auth');
 
@@ -25,6 +28,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('main.home')->middle
 Route::post('registerUser',[RegisterController::class, 'register'])->name('register');
 
 Route::get('/CadastrarCluster',[HomeController::class, 'cadastrarCluster'])->name('cluster');
+
+Route::get('/listaClasses',[HomeController::class, 'listaClasses'])->name('classes');
 
 Route::get('/',[LoginController::class, 'destroy'])->name('loggout');
 
@@ -38,9 +43,12 @@ Route::post('/files', [FilesController::class, 'ProcessArquivo'])->name('Process
 Route::post('/novosDadosOs', [NovaOsController::class, 'novosDadosOs'])->name('adicionaDos');
 
 Route::post('/DadosOsOm', [NovaOsController::class, 'DadosOsOm'])->name('adicionaOM');
+
 Route::post('/listarFotos', [NovaOsController::class, 'listarFotos'])->name('listarFotos');
 
+
 Route::post('/adicionaServico', [NovaOsController::class, 'adicionaServico'])->name('adicionaServico');
+
 Route::post('/Allos', [NovaOsController::class, 'AllOms'])->name('AllOms');
 
 

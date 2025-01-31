@@ -25,6 +25,7 @@ class Cadastroos extends Model
                   'clus.NomeCluster',
                   'os.endereco',
                   'class.tipoOs',
+                  'class.idClasseOs',
                   'os.hoInicio',
                   'os.horFim',
                   'os.solClaro',
