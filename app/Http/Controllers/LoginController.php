@@ -74,6 +74,13 @@ class LoginController extends Controller
       }
 
 
+      public function AlterPass(Request $senha){
+
+           dd($senha);
+
+      }
+
+
 }
 
 

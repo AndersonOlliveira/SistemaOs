@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\classesController;
 use App\Http\Controllers\api\CluesterApicontroller;
 use App\Http\Controllers\Api\fecharOsContoller;
 use App\Http\Controllers\Api\ListaosController;
+use App\Http\Controllers\Api\listaUserController;
 use App\Http\Controllers\Api\PhotoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,8 @@ Route::get('/ListaOs', [ListaosController::class, 'index'])->name('listarOs');
 Route::get('/ListaOsFechadas', [ListaosController::class, 'osFechadas'])->name('osFechadas');
 // Route::post('/adicionarOs', [ListaosController::class, 'adicionarOs'])->name('adicionarOs');
 Route::get('/ListaProdutos', [ListaosController::class, 'listaProdutos'])->name('listaProdutos');
+
+Route::get('/ListaUsuarios', [listaUserController::class, 'ListaUser'])->name('ListaUser');
 
 Route::get('/ListaDadosClusters', [ListaosController::class, 'listaDadosCluster'])->name('listaDados');
 

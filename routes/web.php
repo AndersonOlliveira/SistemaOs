@@ -21,6 +21,10 @@ Route::post('/CadClasses', [cadastroOsContoller::class, 'CadastroClases'])->name
 
 Route::get('/AdicionarUser', [HomeController::class, 'adduser'])->name('addUser')->middleware('auth');
 
+Route::get('/ListaUsuarios', [HomeController::class, 'listaUser'])->name('listaUser')->middleware('auth');
+
+Route::post('/AlterPass', [LoginController::class, 'AlterPass'])->name('AlterPass')->middleware('auth');
+
 Route::get('/alterarSenha', [LoginController::class, 'alterarSenha'])->name('alterarSenha')->middleware('auth');
 
 Route::get('/home', [HomeController::class, 'index'])->name('main.home')->middleware('auth');

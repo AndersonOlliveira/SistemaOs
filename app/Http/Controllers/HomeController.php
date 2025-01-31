@@ -35,4 +35,9 @@ public function listaClasses(){
   return view('main.classes');
 }
 
+public function listaUser(){
+
+    return view('main.listaUser');
+}
+
 }

@@ -68,7 +68,7 @@
                         <ul>
                             <li><img src="icons/administrador.png" width="15" height="15"><a href="{{route('addUser')}}" style="cursor: pointer;">Adicionar Usuários</a></li>
                             <hr>
-                            <li><img src="icons/administrador.png" width="15" height="15"><a href="addUsuario/listaUsuarios.php" style="cursor: pointer;">Listar Usuários</a></li>
+                            <li><img src="icons/administrador.png" width="15" height="15"><a href="{{route('listaUser')}}" style="cursor: pointer;">Listar Usuários</a></li>
                             <hr>
                             <li><img src="icons/administrador.png" width="15" height="15"><a href="{{route('cluster')}}" style="cursor: pointer;">Cad: Cluster</a></li>
                             <hr>
